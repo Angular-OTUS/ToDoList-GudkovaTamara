@@ -1,0 +1,13 @@
+@let itemData = item();
+<article class="item">
+  <div class="item__title">
+    <h3>{{ itemData.title }}</h3>
+    <span>{{ itemData.completed ? '✔️' : '⏰' }}</span>
+  </div>
+
+
+  <p>{{ itemData.description }}</p>
+  <div class="actions">
+    <button type="button" class="action action-delete" (click)="deleteItem(itemData.id)">Delete</button>
+  </div>
+</article>

@@ -1,13 +1,19 @@
-<h1>To Do List</h1>
-<ul>
-  <li>
-    <p>text</p>
-    <button type="button">Delete</button>
+<h1>To Do List ({{ itemsCount() }})</h1>
+<div class="actions">
+  <!-- <input [(ngModel)]="newToDoDescription" type="text"> -->
+  <mat-form-field class="example-full-width">
+    <mat-label>Описание задачи</mat-label>
+    <input matInput [(ngModel)]="newToDoDescription" placeholder="Введите описание задачи">
+  </mat-form-field>
+  <button class="action action-add" [class]="{
+      'disabled': !newToDoDescription
+    }" [disabled]="!newToDoDescription" type="button" (click)="addItem()">Add</button>
+</div>
+<ul class="list">
+  @for (item of toDoItems; track item.id) {
+  <li class="list__item">
+    <to-do-list-item [item]="item" (deleted)="deleteItem($event)" />
   </li>
-
+  }
 </ul>
-<form>
-  <input type="text">
-  <button type="button">Add</button>
-</form>
 
