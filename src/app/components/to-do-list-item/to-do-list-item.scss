@@ -1,18 +1,14 @@
-.list {
-  list-style: none;
-  margin: 0;
-  padding: 10px;
-  box-sizing: border-box;
-  width: 100%;
+.completed {
+  text-decoration: line-through;
+}
 
-  display: grid;
-  // grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+.item {
+  position: relative;
 
-  &__item {
-    padding: 1rem;
-    border: 1px solid #ccc;
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 
@@ -24,8 +20,9 @@
   padding: 0.5rem;
   cursor: pointer;
 
-  &-add {
-    background-color: green;
+  &-delete {
+    background-color: red;
+    margin-inline-start: auto;
   }
 
   &:disabled {
