@@ -22,10 +22,6 @@ export class ToDoListComponent {
   newToDoDescription = '';
   itemsCount = signal(this.toDoItems.length);
 
-  constructor() {
-    console.log('ToDoList constructor');
-  }
-
   deleteItem (id: number) {
     this.toDoItems = this.toDoItems.filter(item => item.id !== id);
     this.itemsCount.set(this.toDoItems.length);
