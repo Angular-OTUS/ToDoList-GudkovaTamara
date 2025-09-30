@@ -1,0 +1,9 @@
+<button
+  [matButton]="appearance()"
+  mat-raised-button
+  [disabled]="isDisabled()"
+  type="{{ type() }}"
+  (click)="clicked.emit()"
+>
+    {{ title() }}
+</button>

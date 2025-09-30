@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { ToDoListItem } from '../to-do-list/types';
+import { AppButton } from '../../lib/ul/app-button/app-button';
 
 @Component({
   selector: 'to-do-list-item',
-  imports: [],
+  imports: [
+    AppButton
+  ],
   templateUrl: './to-do-list-item.html',
   styleUrl: './to-do-list-item.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
