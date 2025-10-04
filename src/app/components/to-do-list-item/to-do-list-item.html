@@ -9,5 +9,9 @@
   <p>{{ itemData.description }}</p>
   <div class="actions">
     <button type="button" class="action action-delete" (click)="deleteItem(itemData.id)">Delete</button>
+    <app-button
+      title="Удалить задачу"
+      (clicked)="deleteItem(itemData.id)"
+    />
   </div>
 </article>
