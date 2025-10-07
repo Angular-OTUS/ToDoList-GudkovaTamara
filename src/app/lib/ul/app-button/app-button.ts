@@ -17,6 +17,16 @@ export class AppButton {
   isDisabled: InputSignal<boolean> = input<boolean>(false);
   type: InputSignal<string> = input<string>('button');
   appearance: InputSignal<MatButtonAppearance> = input<MatButtonAppearance>('filled');
+  // параметр для управления остановкой распространения
+  stopPropagation: InputSignal<boolean> = input<boolean>(false);
 
   clicked = output<void>();
+
+  handleClick(evt: Event) {
+
+    if (this.stopPropagation()) {
+      evt.stopPropagation();
+    }
+    this.clicked.emit();
+  }
 }

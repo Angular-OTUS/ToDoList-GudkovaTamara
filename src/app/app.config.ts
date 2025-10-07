@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 
-import { materialFormFieldProvider } from './material/material.config';
+import { materialConfigProviders } from './material/material.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,6 +11,6 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
 
-    materialFormFieldProvider
+    ...materialConfigProviders,
   ]
 };

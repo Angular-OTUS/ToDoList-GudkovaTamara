@@ -1,17 +1,23 @@
 @let itemData = item();
-<article class="item">
-  <div class="item__title">
-    <h3>{{ itemData.title }}</h3>
+
+<mat-card
+  class="item"
+  (click)="selectItem(itemData)"
+  [appTooltip]="'Нажмите, чтобы выбрать задачу'"
+  [class.selected]="isSelected()"
+>
+  <mat-card-header class="item__title">
+    <mat-card-title [class.completed]="itemData.completed">
+      {{ itemData.title }}
+    </mat-card-title>
     <span>{{ itemData.completed ? '✔️' : '⏰' }}</span>
-  </div>
-
-
+  </mat-card-header>
   <p>{{ itemData.description }}</p>
-  <div class="actions">
-    <button type="button" class="action action-delete" (click)="deleteItem(itemData.id)">Delete</button>
+  <mat-card-actions class="item__actions">
     <app-button
       title="Удалить задачу"
+      [stopPropagation]="true"
       (clicked)="deleteItem(itemData.id)"
     />
-  </div>
-</article>
+  </mat-card-actions>
+</mat-card>

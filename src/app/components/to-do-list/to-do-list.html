@@ -1,23 +1,51 @@
 <h1>To Do List ({{ itemsCount() }})</h1>
 @if (!isLoading()) {
-  <div class="actions">
+  <mat-card class="new-todo-form">
+    <mat-card-header>
+      <mat-card-title>Новая задача</mat-card-title>
+    </mat-card-header>
     <mat-form-field class="example-full-width">
-      <mat-label>Описание задачи</mat-label>
-      <input matInput [(ngModel)]="newToDoDescription" placeholder="Введите описание задачи">
+      <mat-label>Название</mat-label>
+      <input matInput [(ngModel)]="newTodoData.title" placeholder="Введите название задачи">
     </mat-form-field>
-    <app-button
-      title="Добавить задачу"
-      [isDisabled]="!newToDoDescription"
-      (clicked)="addItem()"
-    />
-  </div>
-  <ul class="list">
-  @for (item of toDoItems; track item.id) {
-    <li class="list__item">
-        <to-do-list-item [item]="item" (deleted)="deleteItem($event)" />
-      </li>
+    <mat-form-field class="example-full-width">
+      <mat-label>Описание</mat-label>
+      <textarea matInput [(ngModel)]="newTodoData.description" placeholder="Введите описание задачи"></textarea>
+    </mat-form-field>
+    <mat-card-actions class="new-todo-form__actions">
+      <app-button
+        title="Добавить задачу"
+        [isDisabled]="!newTodoData.description"
+        [appTooltip]="'Добавьте задачу'"
+        (clicked)="addItem()"
+      />
+    </mat-card-actions>
+  </mat-card>
+  <div class="columns-container">
+    <div class="column column-start">
+      <ul class="list">
+        @for (item of toDoItems; track item.id) {
+        <li class="list__item">
+          <to-do-list-item
+            [item]="item"
+            [isSelected]="item.id === selectedItem()?.id"
+            (deleted)="deleteItem($event)"
+            (selected)="showSelectedItemContent($event)"
+          />
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="column">
+      @let dataToShow = selectedItem();
+      @if (!!dataToShow) {
+        <div class="selected-description">
+          <h3>{{ dataToShow.title }}</h3>
+          <p>{{ dataToShow.description }}</p>
+        </div>
       }
-    </ul>
+    </div>
+  </div>
 } @else {
   <div class="loading">
     <mat-spinner></mat-spinner>

@@ -3,7 +3,7 @@
   mat-raised-button
   [disabled]="isDisabled()"
   type="{{ type() }}"
-  (click)="clicked.emit()"
+  (click)="handleClick($event)"
 >
     {{ title() }}
 </button>

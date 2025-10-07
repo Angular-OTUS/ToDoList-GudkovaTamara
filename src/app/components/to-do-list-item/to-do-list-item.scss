@@ -4,39 +4,22 @@
 
 .item {
   position: relative;
+  padding: 1rem;
+  cursor: pointer;
 
   &__title {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-}
 
-.action {
-  color: white;
-  outline: none;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  cursor: pointer;
-
-  &-delete {
-    background-color: red;
-    margin-inline-start: auto;
-  }
-
-  &:disabled {
-    background-color: #ccc;
-    color: #666;
-    cursor: not-allowed;
-    opacity: 0.6;
+  &__actions {
+    justify-content: flex-end;
   }
 }
 
-.actions {
-  display: flex;
-  gap: 1rem;
-  align-items: baseline;
-  inline-size: 100%;
-  margin-block-start: 2rem;
+.selected {
+  background-color: beige;
 }
+
+

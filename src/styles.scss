@@ -13,7 +13,7 @@ html {
       tertiary: mat.$orange-palette,
     ),
     typography: Roboto,
-    density: -5,
+    density: -1,
   ));
 }
 
@@ -32,8 +32,18 @@ body {
 
   // Reset the user agent margin.
   margin: 0;
+  padding: 1.5rem;
+  box-sizing: border-box;
 }
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* ----- MAT CARD ------ */
+
+mat-card-header,
+mat-card-actions {
+  padding: 0 !important;
+  min-height: auto !important;
+}
