@@ -3,7 +3,6 @@
 <mat-card
   class="item"
   (click)="selectItem(itemData)"
-  [appTooltip]="'Нажмите, чтобы выбрать задачу'"
   [class.selected]="isSelected()"
 >
   <mat-card-header class="item__title">
@@ -15,8 +14,9 @@
   <p>{{ itemData.description }}</p>
   <mat-card-actions class="item__actions">
     <app-button
-      title="Удалить задачу"
+      btn-title="Удалить задачу"
       [stopPropagation]="true"
+      [appTooltip]="'Удалить задачу'"
       (clicked)="deleteItem(itemData.id)"
     />
   </mat-card-actions>

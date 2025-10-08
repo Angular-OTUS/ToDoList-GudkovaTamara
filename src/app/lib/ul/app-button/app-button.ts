@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, InputSignal, output } from '@angular/core';
 import { MatButtonAppearance, MatButtonModule } from '@angular/material/button';
-import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-button',
@@ -13,7 +12,7 @@ import { ThemePalette } from '@angular/material/core';
 })
 export class AppButton {
 
-  title: InputSignal<string> = input.required<string>();
+  title = input<string>('', { alias: 'btn-title' });
   isDisabled: InputSignal<boolean> = input<boolean>(false);
   type: InputSignal<string> = input<string>('button');
   appearance: InputSignal<MatButtonAppearance> = input<MatButtonAppearance>('filled');
