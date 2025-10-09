@@ -4,8 +4,10 @@ import { ToDoListItem } from './types';
 import { FormsModule } from '@angular/forms';
 import { ToDoListItemComponent } from '../to-do-list-item/to-do-list-item';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule, MatSpinner } from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppButton } from '../../lib/ul/app-button/app-button';
+import { MatCardModule } from '@angular/material/card';
+import { TooltipDirective } from '../../lib/directives/tooltip/tooltip';
 
 @Component({
   selector: 'app-to-do-list',
@@ -14,6 +16,9 @@ import { AppButton } from '../../lib/ul/app-button/app-button';
     ToDoListItemComponent,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatCardModule,
+
+    TooltipDirective,
     AppButton
   ],
   templateUrl: './to-do-list.html',
@@ -23,9 +28,11 @@ import { AppButton } from '../../lib/ul/app-button/app-button';
 export class ToDoListComponent implements OnInit {
 
   toDoItems: ToDoListItem[] = TO_DO_LIST_DATA;
-  newToDoDescription = '';
+  newTodoData = {} as ToDoListItem;
+
   itemsCount = signal(this.toDoItems.length);
   isLoading: WritableSignal<boolean> = signal(true);
+  selectedItem: WritableSignal<ToDoListItem | null> = signal(null);
 
   deleteItem (id: number) {
     this.toDoItems = this.toDoItems.filter(item => item.id !== id);
@@ -39,13 +46,17 @@ export class ToDoListComponent implements OnInit {
 
     this.toDoItems.unshift({
       id: currentMaxId + 1,
-      title: `Task ${currentMaxId + 1}`,
-      description: this.newToDoDescription,
+      title: this.newTodoData.title ?? `Task ${currentMaxId + 1}`,
+      description: this.newTodoData.description,
       completed: false
     });
 
-    this.newToDoDescription = '';
+    this.newTodoData = {} as ToDoListItem
     this.itemsCount.set(this.toDoItems.length);
+  }
+
+  showSelectedItemContent($event: ToDoListItem): void {
+    this.selectedItem.set($event);
   }
 
   ngOnInit(): void {
