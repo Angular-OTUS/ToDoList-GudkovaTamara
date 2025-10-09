@@ -46,7 +46,7 @@ export class ToDoListComponent implements OnInit {
 
     this.toDoItems.unshift({
       id: currentMaxId + 1,
-      title: this.newTodoData.title ? this.newTodoData.title : `Task ${currentMaxId + 1}`,
+      title: this.newTodoData.title ?? `Task ${currentMaxId + 1}`,
       description: this.newTodoData.description,
       completed: false
     });
