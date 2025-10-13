@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, OnInit, signal, WritableSignal } fr
 import { TO_DO_LIST_DATA } from './to-do-list-data';
 import { ToDoListItem } from './types';
 import { FormsModule } from '@angular/forms';
-import { ToDoListItemComponent } from '../to-do-list-item/to-do-list-item';
+import { ToDoListItemComponent } from '../../components/to-do-list-item/to-do-list-item';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AppButton } from '../../lib/ul/app-button/app-button';
+import { AppButton } from '../../../../lib/ul/app-button/app-button';
 import { MatCardModule } from '@angular/material/card';
-import { TooltipDirective } from '../../lib/directives/tooltip/tooltip';
+import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 
 @Component({
   selector: 'app-to-do-list',
