@@ -1,0 +1,30 @@
+@let dataToShow = data();
+
+<div class="edit-todo-form">
+  <h2>Редактировать задачу</h2>
+  <mat-form-field class="example-full-width">
+    <mat-label>Название</mat-label>
+    <input
+      matInput
+      [value]="dataToShow?.title"
+      (input)="updateTitle($event)"
+    >
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Описание</mat-label>
+    <input
+      matInput
+      [value]="dataToShow?.description"
+      (input)="updateDescription($event)"
+    >
+  </mat-form-field>
+  <div class="edit-todo-form__actions">
+    <app-button
+      btn-title="Сохранить"
+      [isDisabled]="!dataToSave"
+      [appTooltip]="'Сохранить задачу'"
+      (clicked)="save()"
+    />
+  </div>
+
+</div>

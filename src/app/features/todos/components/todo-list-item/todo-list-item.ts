@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
-import { ToDoListItem } from '../../containers/to-do-list/types';
+import { ToDoListItem } from '../../../types/types';
 import { AppButton } from '../../../../lib/ul/app-button/app-button';
 import { MatCardModule } from '@angular/material/card';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
@@ -11,8 +11,8 @@ import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
     MatCardModule,
     TooltipDirective,
   ],
-  templateUrl: './to-do-list-item.html',
-  styleUrl: './to-do-list-item.scss',
+  templateUrl: './todo-list-item.html',
+  styleUrl: './todo-list-item.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToDoListItemComponent {

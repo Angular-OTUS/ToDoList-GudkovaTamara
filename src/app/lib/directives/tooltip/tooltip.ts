@@ -2,7 +2,7 @@ import { ComponentRef, Directive, HostListener, input, InputSignal, signal, View
 import { TooltipComponent } from '../../ul/tooltip/tooltip';
 
 @Directive({
-  selector: '[appTooltip]',
+  selector: '[appTooltip]', // Это атрибутная директива
   standalone: true
 })
 export class TooltipDirective {
@@ -17,13 +17,10 @@ export class TooltipDirective {
   ) { }
 
   @HostListener('mouseenter') onMouseEnter() {
-    console.log('onMouseEnter');
-    // СТРУКТУРНОЕ ИЗМЕНЕНИЕ: Создаем компонент подсказки
     this.showTooltip();
   }
 
   @HostListener('mouseleave') onMouseLeave() {
-    // СТРУКТУРНОЕ ИЗМЕНЕНИЕ: Уничтожаем компонент подсказки
     this.hideTooltip();
   }
 
@@ -35,7 +32,6 @@ export class TooltipDirective {
 
   private hideTooltip() {
     if (this.tooltipComponentRef) {
-      // Метод destroy() СТРУКТУРНО меняет DOM
       this.tooltipComponentRef.destroy();
       this.tooltipComponentRef = null;
     }

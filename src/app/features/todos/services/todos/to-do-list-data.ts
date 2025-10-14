@@ -1,4 +1,4 @@
-import { ToDoListItem } from './types';
+import { ToDoListItem } from '../../../types/types';
 
 export const TO_DO_LIST_DATA: ToDoListItem[] = [
   {

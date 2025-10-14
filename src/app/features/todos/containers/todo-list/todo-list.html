@@ -24,7 +24,7 @@
   <div class="columns-container">
     <div class="column column-start">
       <ul class="list">
-        @for (item of toDoItems; track item.id) {
+        @for (item of toDoItems(); track item.id) {
         <li class="list__item">
           <to-do-list-item
             [item]="item"
@@ -39,10 +39,7 @@
     <div class="column">
       @let dataToShow = selectedItem();
       @if (!!dataToShow) {
-        <div class="selected-description">
-          <h3>{{ dataToShow.title }}</h3>
-          <p>{{ dataToShow.description }}</p>
-        </div>
+        <app-edit-todo-form [data]="dataToShow" />
       }
     </div>
   </div>
