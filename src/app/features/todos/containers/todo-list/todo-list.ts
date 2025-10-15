@@ -10,6 +10,7 @@ import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { TodosService } from '../../services/todos/todos.service';
 import { EditTodoFormComponent } from '../../components/edit-todo-form/edit-todo-form';
 import { ToastService } from '../../../../core/services/toast/toast.service';
+import { TodosStateService } from '../../services/todos-state/todos-state-service';
 
 @Component({
   selector: 'app-to-do-list',
@@ -32,25 +33,18 @@ export class ToDoListComponent implements OnInit {
 
   private todosService: TodosService = inject(TodosService);
   private toastService: ToastService = inject(ToastService);
+  private todosStateService: TodosStateService = inject(TodosStateService);
 
   toDoItems: Signal<ToDoListItem[]> = this.todosService.todos;
   newTodoData: ToDoListItem = {} as ToDoListItem;
   itemsCount: Signal<number> = this.todosService.countTodos;
   isLoading: WritableSignal<boolean> = signal(true);
-  selectedItem: WritableSignal<ToDoListItem | null> = signal(null);
-
-  deleteItem (id: number) {
-    this.todosService.deleteTodo(id);
-  }
+  selectedItem: Signal<ToDoListItem | null> = this.todosStateService.selectedItem;
 
   addItem () {
     this.todosService.addTodo(this.newTodoData);
     this.newTodoData = {} as ToDoListItem;
     this.toastService.showSuccess('Задача успешно добавлена');
-  }
-
-  showSelectedItemContent($event: ToDoListItem): void {
-    this.selectedItem.set($event);
   }
 
   ngOnInit(): void {

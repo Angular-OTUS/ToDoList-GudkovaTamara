@@ -1,6 +1,6 @@
 import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { ToDoListItem } from '../../../types/types';
-import { TO_DO_LIST_DATA } from './to-do-list-data';
+import { TO_DO_LIST_DATA } from './todo-list-data';
 
 @Injectable({
   providedIn: 'root'

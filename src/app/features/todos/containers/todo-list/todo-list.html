@@ -1,4 +1,4 @@
-<h1>To Do List ({{ itemsCount() }})</h1>
+<h1>ToDo List ({{ itemsCount() }})</h1>
 @if (!isLoading()) {
   <mat-card class="new-todo-form">
     <mat-card-header>
@@ -26,20 +26,14 @@
       <ul class="list">
         @for (item of toDoItems(); track item.id) {
         <li class="list__item">
-          <to-do-list-item
-            [item]="item"
-            [isSelected]="item.id === selectedItem()?.id"
-            (deleted)="deleteItem($event)"
-            (selected)="showSelectedItemContent($event)"
-          />
+          <todo-list-item [item]="item" />
         </li>
         }
       </ul>
     </div>
     <div class="column">
-      @let dataToShow = selectedItem();
-      @if (!!dataToShow) {
-        <app-edit-todo-form [data]="dataToShow" />
+      @if (!!selectedItem()) {
+        <app-edit-todo-form />
       }
     </div>
   </div>

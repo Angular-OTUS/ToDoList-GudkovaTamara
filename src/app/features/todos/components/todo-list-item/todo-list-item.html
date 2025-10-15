@@ -2,7 +2,8 @@
 
 <mat-card
   class="item"
-  (click)="selectItem(itemData)"
+  (click)="selectItem()"
+  (dblclick)="handleDblClick()"
   [class.selected]="isSelected()"
 >
   <mat-card-header class="item__title">

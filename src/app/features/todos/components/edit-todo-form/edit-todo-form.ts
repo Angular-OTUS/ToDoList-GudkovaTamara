@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, InputSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, WritableSignal } from '@angular/core';
 import { ToDoListItem } from '../../../types/types';
 import { MatInputModule } from '@angular/material/input';
 import { AppButton } from '../../../../lib/ul/app-button/app-button';
 import { TodosService } from '../../services/todos/todos.service';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { ToastService } from '../../../../core/services/toast/toast.service';
+import { TodosStateService } from '../../services/todos-state/todos-state-service';
 
 @Component({
   selector: 'app-edit-todo-form',
@@ -22,38 +23,48 @@ export class EditTodoFormComponent {
 
   private todosService = inject(TodosService);
   private toastService = inject(ToastService);
+  private todosStateService = inject(TodosStateService);
 
-  data: InputSignal<ToDoListItem> = input.required<ToDoListItem>();
-  dataToSave: ToDoListItem | null = null;
+  isEditMode = this.todosStateService.isEditMode;
+  selectedItem = this.todosStateService.selectedItem;
 
-  constructor() {
-    effect(() => {
-      this.dataToSave = this.data();
-    });
-  }
+  title = computed(() => {
+    return this.isEditMode()
+      ? 'Редактировать задачу'
+      : 'Просмотр задачи';
+  })
+
+  private dataToSave: WritableSignal<ToDoListItem | null> = signal(this.selectedItem());
+
+  isFormDirty = computed(() => {
+    const dataToSave = this.dataToSave();
+    const selectedItem = this.selectedItem();
+    return dataToSave?.title !== selectedItem?.title
+      || dataToSave?.description !== selectedItem?.description;
+  })
 
   updateTitle(evt: Event) {
-    if (this.dataToSave) {
-      this.dataToSave = {
-        ...this.dataToSave,
+    const item = this.selectedItem();
+    if (item) {
+      this.dataToSave.set({
+        ...item,
         title: (evt.target as HTMLInputElement).value
-      };
+      })
     }
   }
 
   updateDescription(evt: Event) {
-    if (this.dataToSave) {
-      this.dataToSave = {
-        ...this.dataToSave,
+    const item = this.selectedItem();
+    if (item) {
+      this.dataToSave.set({
+        ...item,
         description: (evt.target as HTMLInputElement).value
-      };
+      })
     }
   }
 
   save() {
-    if (this.dataToSave) {
-      this.todosService.editTodo(this.dataToSave);
-    }
+    this.todosService.editTodo(this.dataToSave()!);
     this.toastService.showSuccess('Задача успешно обновлена');
   }
 }

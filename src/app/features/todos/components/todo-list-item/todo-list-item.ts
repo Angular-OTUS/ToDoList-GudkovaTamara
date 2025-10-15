@@ -1,11 +1,14 @@
-import { ChangeDetectionStrategy, Component, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { ToDoListItem } from '../../../types/types';
 import { AppButton } from '../../../../lib/ul/app-button/app-button';
 import { MatCardModule } from '@angular/material/card';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
+import { TodosStateService } from '../../services/todos-state/todos-state-service';
+import { ToastService } from '../../../../core/services/toast/toast.service';
+import { TodosService } from '../../services/todos/todos.service';
 
 @Component({
-  selector: 'to-do-list-item',
+  selector: 'todo-list-item',
   imports: [
     AppButton,
     MatCardModule,
@@ -17,16 +20,27 @@ import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 })
 export class ToDoListItemComponent {
 
-  item: InputSignal<ToDoListItem> = input.required<ToDoListItem>();
-  isSelected: InputSignal<boolean> = input<boolean>(false);
-  deleted: OutputEmitterRef<ToDoListItem['id']> = output<ToDoListItem['id']>();
-  selected: OutputEmitterRef<ToDoListItem> = output<ToDoListItem>();
+  private todosStateService = inject(TodosStateService);
+  private todosService = inject(TodosService);
+  private toastService = inject(ToastService);
 
-  deleteItem (id: number) {
-    this.deleted.emit(id);
+  item: InputSignal<ToDoListItem> = input.required<ToDoListItem>();
+  deleted: OutputEmitterRef<ToDoListItem['id']> = output<ToDoListItem['id']>();
+
+  isSelected () {
+    return this.item().id === this.todosStateService.selectedItem()?.id
   }
 
-  selectItem (item: ToDoListItem) {
-    this.selected.emit(item);
+  selectItem() {
+    this.todosStateService.selectItem(this.item());
+  }
+
+  handleDblClick() {
+    this.todosStateService.editItem(this.item());
+  }
+
+  deleteItem (id: number) {
+    this.todosService.deleteTodo(id);
+    this.toastService.showSuccess('Задача успешно удалена');
   }
 }
