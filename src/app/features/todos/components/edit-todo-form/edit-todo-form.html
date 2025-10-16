@@ -1,0 +1,33 @@
+@let dataToShow = selectedItem();
+
+<div class="edit-todo-form">
+  <h2>{{ title() }} </h2>
+  <mat-form-field class="example-full-width">
+    <mat-label>Название</mat-label>
+    <input
+      matInput
+      [value]="dataToShow?.title"
+      [disabled]="!isEditMode()"
+      (input)="updateTitle($event)"
+    >
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Описание</mat-label>
+    <textarea
+      matInput
+      [value]="dataToShow?.description"
+      [disabled]="!isEditMode()"
+      (input)="updateDescription($event)"
+    ></textarea>
+  </mat-form-field>
+  @if (isEditMode()) {
+  <div class="edit-todo-form__actions">
+    <app-button
+      btn-title="Сохранить"
+      [isDisabled]="!isFormDirty()"
+      [appTooltip]="'Сохранить задачу'"
+      (clicked)="save()"
+    />
+  </div>
+  }
+</div>

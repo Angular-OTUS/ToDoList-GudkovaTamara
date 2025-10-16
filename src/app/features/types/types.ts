@@ -4,3 +4,4 @@ export type ToDoListItem = {
   description: string;
   completed: boolean;
 }
+
