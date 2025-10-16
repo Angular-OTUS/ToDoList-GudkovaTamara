@@ -1,4 +1,4 @@
-import { ComponentRef, createComponent, EnvironmentInjector, inject, Injectable } from '@angular/core';
+import { ComponentRef, createComponent, EnvironmentInjector, inject, Injectable, OnDestroy } from '@angular/core';
 import { ToastComponent } from '../../../lib/ul/toast/toast';
 import { ToastConfig, ToastModel } from './types';
 import { Subscription } from 'rxjs';
@@ -11,11 +11,15 @@ const DEFAULT_TOAST_CONFIG: Required<Omit<ToastConfig, 'message'>> = {
 };
 
 @Injectable({ providedIn: 'root' })
-export class ToastService {
+export class ToastService implements OnDestroy {
   private environmentInjector: EnvironmentInjector = inject(EnvironmentInjector);
 
   private toasts: ToastModel<ToastComponent>[] = [];
   private readonly MAX_TOASTS = 5; // Максимум тостов одновременно
+
+  ngOnDestroy(): void {
+    this.destroyAll(); // очистит DOM и таймеры
+  }
 
   private removeOldestIfNeeded(): void {
     // Автоматически удаляем старые тосты при превышении лимита
