@@ -34,11 +34,15 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
+}
 
-  .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-block-start: 2rem;
+.loading {
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  margin-block: 2rem;
+
+  mat-spinner {
+    margin: auto;
   }
 }

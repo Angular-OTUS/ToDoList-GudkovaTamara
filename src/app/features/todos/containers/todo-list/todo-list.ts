@@ -11,6 +11,8 @@ import { TodosService } from '../../services/todos/todos.service';
 import { EditTodoFormComponent } from '../../components/edit-todo-form/edit-todo-form';
 import { ToastService } from '../../../../core/services/toast/toast.service';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
+import { Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-to-do-list',
@@ -24,6 +26,8 @@ import { TodosStateService } from '../../services/todos-state/todos-state-servic
     TooltipDirective,
     EditTodoFormComponent,
     AppButton,
+
+    // AsyncPipe
   ],
   templateUrl: './todo-list.html',
   styleUrl: './todo-list.scss',
@@ -32,24 +36,21 @@ import { TodosStateService } from '../../services/todos-state/todos-state-servic
 export class ToDoListComponent implements OnInit {
 
   private todosService: TodosService = inject(TodosService);
-  private toastService: ToastService = inject(ToastService);
   private todosStateService: TodosStateService = inject(TodosStateService);
 
-  toDoItems: Signal<ToDoListItem[]> = this.todosService.todos;
+  todos: Signal<ToDoListItem[]> = this.todosStateService.todos;
+  todos$: Observable<ToDoListItem[]> = new Observable<ToDoListItem[]>();
   newTodoData: ToDoListItem = {} as ToDoListItem;
   itemsCount: Signal<number> = this.todosService.countTodos;
-  isLoading: WritableSignal<boolean> = signal(true);
+  isLoading: WritableSignal<boolean> = this.todosService.isLoading;
   selectedItem: Signal<ToDoListItem | null> = this.todosStateService.selectedItem;
 
-  addItem () {
+  addItem() {
     this.todosService.addTodo(this.newTodoData);
     this.newTodoData = {} as ToDoListItem;
-    this.toastService.showSuccess('Задача успешно добавлена');
   }
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.isLoading.set(false);
-    }, 500);
+  ngOnInit() {
+    this.todosService.loadTodos();
   }
 }

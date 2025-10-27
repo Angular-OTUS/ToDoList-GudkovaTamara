@@ -1,42 +1,101 @@
-import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, DestroyRef, inject, Injectable, Injector, Signal, signal, WritableSignal } from '@angular/core';
 import { ToDoListItem } from '../../../types/types';
 import { TO_DO_LIST_DATA } from './todo-list-data';
+import { TodosApiService } from '../todos-api/todos-api.service';
+import { catchError, map, Observable, of, share, Subject, tap } from 'rxjs';
+import { ToastService } from '../../../../core/services/toast/toast.service';
+import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TodosStateService } from '../todos-state/todos-state-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodosService {
 
-  private _todos: WritableSignal<ToDoListItem[]> = signal(TO_DO_LIST_DATA);
+  todosApiService = inject(TodosApiService);
+  toastService = inject(ToastService);
+  loggerService = inject(LoggerService);
+  stateService = inject(TodosStateService);
+  private destroyRef = inject(DestroyRef);
 
-  countTodos = computed(() => this._todos().length);
+  countTodos = computed(() => this.stateService.todos().length);
 
-  todos: Signal<ToDoListItem[]> = this._todos.asReadonly();
+  isLoading: WritableSignal<boolean> = signal(false);
 
   addTodo(todo: ToDoListItem) {
     const newTodoId = this.countTodos() + 1;
-
-    this._todos.set([
-      {
-        id: newTodoId,
-        title: todo.title,
-        description: todo.description,
-        completed: false
-      },
-      ...this._todos(),
-    ]);
+    this.todosApiService.createTodo({
+      ...todo,
+      title: todo.title ?? this.getDefaultTitle(newTodoId.toString()),
+      completed: todo.completed ?? false,
+      id: newTodoId,
+    }).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap((updatedItem) => {
+        this.loadTodos();
+        this.toastService.showSuccess(`Задача "${updatedItem.title}" успешно добавлена`);
+      }),
+      catchError(e => {
+        console.error(e.message, e.stack, e.status);
+        this.toastService.showError('Ошибка добавления задачи');
+        return of([]);
+      })
+    ).subscribe();
   }
 
-  deleteTodo(id: number) {
-    this._todos.set(
-      this._todos().filter((todo) => todo.id !== id)
-    );
+  deleteTodo(id: number) {debugger
+    this.todosApiService.deleteTodo(id).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap(() => {
+        this.toastService.showSuccess('Задача успешно удалена');
+        this.loadTodos();
+      }),
+      catchError(e => {
+        console.error(e.message, e.stack, e.status);
+        this.toastService.showError('Ошибка удаления задачи');
+        return of([]);
+      })
+    ).subscribe();
   }
 
   editTodo(todo: ToDoListItem) {
-    this._todos.set(
-      this._todos().map((item) => item.id === todo.id ? todo : item)
-    );
+    this.todosApiService.updateTodo({
+      ...todo,
+      title: todo.title ?? this.getDefaultTitle(todo.id.toString()),
+    }).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap((s) => {
+        console.log('s', s);
+        this.toastService.showSuccess('Задача успешно обновлена');
+        this.loadTodos();
+      }),
+      catchError(e => {
+        console.error(e.message, e.stack, e.status);
+        this.toastService.showError('Ошибка обновления задачи');
+        return of([]);
+      })
+    ).subscribe();
   }
 
+  loadTodos(): void {
+    this.isLoading.set(true);
+    this.todosApiService.getTodos()
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        map(todos => todos.sort((a, b) => b.id - a.id)),
+        tap(todos => {
+          this.stateService.setTodosList(todos);
+          this.isLoading.set(false);
+        }),
+        catchError(e => {
+          this.toastService.showError(e.message);
+          return of([]);
+        }),
+      ).subscribe();
+  }
+
+  getDefaultTitle(id: string): string {
+    return `Task ${id}`;
+  }
 }

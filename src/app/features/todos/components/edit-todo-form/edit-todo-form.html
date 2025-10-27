@@ -2,10 +2,20 @@
 
 <div class="edit-todo-form">
   <h2>{{ title() }} </h2>
+  <div>
+    <span>Статус задачи</span>
+    <mat-checkbox
+      name="status"
+      [disabled]="!isEditMode()"
+      [checked]="dataToShow?.status === EStatus.COMPLETED"
+    />
+  </div>
+
   <mat-form-field class="example-full-width">
     <mat-label>Название</mat-label>
     <input
       matInput
+      name="title"
       [value]="dataToShow?.title"
       [disabled]="!isEditMode()"
       (input)="updateTitle($event)"
@@ -15,8 +25,11 @@
     <mat-label>Описание</mat-label>
     <textarea
       matInput
+      name="description"
       [value]="dataToShow?.description"
       [disabled]="!isEditMode()"
+      required
+      minlength="5"
       (input)="updateDescription($event)"
     ></textarea>
   </mat-form-field>
@@ -24,6 +37,7 @@
   <div class="edit-todo-form__actions">
     <app-button
       btn-title="Сохранить"
+      type="submit"
       [isDisabled]="!isFormDirty()"
       [appTooltip]="'Сохранить задачу'"
       (clicked)="save()"

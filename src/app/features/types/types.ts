@@ -3,5 +3,10 @@ export type ToDoListItem = {
   title: string;
   description: string;
   completed: boolean;
+  status: EStatus
 }
 
+export enum EStatus {
+  IN_PROGRESS = 'InProgress',
+  COMPLETED = 'completed'
+}

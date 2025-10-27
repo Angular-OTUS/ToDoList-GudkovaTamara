@@ -1,6 +1,4 @@
-import { ToDoListItem } from '../../../types/types';
-
-export const TO_DO_LIST_DATA: ToDoListItem[] = [
+export const TO_DO_LIST_DATA = [
   {
     id: 1,
     title: 'Task 1',

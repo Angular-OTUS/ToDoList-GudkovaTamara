@@ -1,16 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, WritableSignal } from '@angular/core';
-import { ToDoListItem } from '../../../types/types';
+import { EStatus, ToDoListItem } from '../../../types/types';
 import { MatInputModule } from '@angular/material/input';
 import { AppButton } from '../../../../lib/ul/app-button/app-button';
 import { TodosService } from '../../services/todos/todos.service';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { ToastService } from '../../../../core/services/toast/toast.service';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-edit-todo-form',
   imports: [
     MatInputModule,
+    MatCheckboxModule,
 
     AppButton,
     TooltipDirective,
@@ -27,6 +29,7 @@ export class EditTodoFormComponent {
 
   isEditMode = this.todosStateService.isEditMode;
   selectedItem = this.todosStateService.selectedItem;
+  EStatus = EStatus;
 
   title = computed(() => {
     return this.isEditMode()
