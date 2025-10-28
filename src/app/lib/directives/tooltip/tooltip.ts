@@ -1,5 +1,5 @@
 import { ComponentRef, Directive, HostListener, input, InputSignal, signal, ViewContainerRef, WritableSignal } from '@angular/core';
-import { TooltipComponent } from '../../ul/tooltip/tooltip';
+import { TooltipComponent } from '../../ui/tooltip/tooltip';
 
 @Directive({
   selector: '[appTooltip]', // Это атрибутная директива
@@ -11,6 +11,7 @@ export class TooltipDirective {
   appTooltip: InputSignal<string> = input<string>('');
 
   private tooltipComponentRef: ComponentRef<TooltipComponent> | null = null;
+
 
   constructor(
     private viewContainerRef: ViewContainerRef

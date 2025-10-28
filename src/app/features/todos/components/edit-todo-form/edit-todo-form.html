@@ -1,13 +1,16 @@
-@let dataToShow = selectedItem();
-
-<div class="edit-todo-form">
+@let editMode = isEditMode();
+<form
+  class="edit-todo-form"
+  #editForm="ngForm"
+  (ngSubmit)="save()"
+>
   <h2>{{ title() }} </h2>
   <div>
     <span>Статус задачи</span>
     <mat-checkbox
       name="status"
-      [disabled]="!isEditMode()"
-      [checked]="dataToShow?.status === EStatus.COMPLETED"
+      [disabled]="!editMode"
+      [(ngModel)]="dataToSave().status"
     />
   </div>
 
@@ -16,9 +19,8 @@
     <input
       matInput
       name="title"
-      [value]="dataToShow?.title"
-      [disabled]="!isEditMode()"
-      (input)="updateTitle($event)"
+      [disabled]="!editMode"
+      [(ngModel)]="dataToSave().title"
     >
   </mat-form-field>
   <mat-form-field class="example-full-width">
@@ -26,22 +28,20 @@
     <textarea
       matInput
       name="description"
-      [value]="dataToShow?.description"
-      [disabled]="!isEditMode()"
+      [disabled]="!editMode"
       required
       minlength="5"
-      (input)="updateDescription($event)"
+      [(ngModel)]="dataToSave().description"
     ></textarea>
   </mat-form-field>
-  @if (isEditMode()) {
+  @if (editMode && editForm) {
   <div class="edit-todo-form__actions">
     <app-button
       btn-title="Сохранить"
       type="submit"
-      [isDisabled]="!isFormDirty()"
+      [isDisabled]="isSaveDisabled"
       [appTooltip]="'Сохранить задачу'"
-      (clicked)="save()"
     />
   </div>
   }
-</div>
+</form>

@@ -1,7 +1,7 @@
 import { ComponentRef, createComponent, EnvironmentInjector, inject, Injectable, OnDestroy } from '@angular/core';
-import { ToastComponent } from '../../../lib/ul/toast/toast';
 import { ToastConfig, ToastModel } from './types';
 import { Subscription } from 'rxjs';
+import { ToastComponent } from '../../../lib/ui/toast/toast';
 
 // Дефолтные настройки
 const DEFAULT_TOAST_CONFIG: Required<Omit<ToastConfig, 'message'>> = {

@@ -1,16 +1,25 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, Signal, signal, viewChild, WritableSignal } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { MatInputModule } from '@angular/material/input';
-import { AppButton } from '../../../../lib/ul/app-button/app-button';
 import { TodosService } from '../../services/todos/todos.service';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { ToastService } from '../../../../core/services/toast/toast.service';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule, NgForm } from '@angular/forms';
+import { AppButton } from '../../../../lib/ui/app-button/app-button';
+
+type DataToSave = {
+  title: string;
+  description: string;
+  status: boolean;
+}
 
 @Component({
   selector: 'app-edit-todo-form',
   imports: [
+    FormsModule,
+
     MatInputModule,
     MatCheckboxModule,
 
@@ -28,16 +37,46 @@ export class EditTodoFormComponent {
   private todosStateService = inject(TodosStateService);
 
   isEditMode = this.todosStateService.isEditMode;
-  selectedItem = this.todosStateService.selectedItem;
+
+  constructor() {
+    // Синхронизация при изменении selectedItem
+    effect(() => {
+      const selectedItem: ToDoListItem = this.selectedItem();
+      this.dataToSave.set({
+        title: selectedItem.title,
+        description: selectedItem.description,
+        status: selectedItem.status === EStatus.COMPLETED
+      });
+    });
+  }
+
+  selectedItem: Signal<ToDoListItem> = computed(() => {
+    const item = this.todosStateService.selectedItem();
+    console.log('form computed signal item', item)
+    if (!item) {
+      throw new Error('Selected item is null in EditTodoFormComponent - this should never happen');
+    }
+    return item;
+  });
+
+
+  // dataToSave - это данные для сохранения
+  dataToSave: WritableSignal<DataToSave> = signal({
+    title: '',
+    description: '',
+    status: false,
+  });
+
+
   EStatus = EStatus;
+
+  editForm = viewChild<NgForm>('editForm');
 
   title = computed(() => {
     return this.isEditMode()
       ? 'Редактировать задачу'
       : 'Просмотр задачи';
   })
-
-  private dataToSave: WritableSignal<ToDoListItem | null> = signal(this.selectedItem());
 
   isFormDirty = computed(() => {
     const dataToSave = this.dataToSave();
@@ -46,28 +85,17 @@ export class EditTodoFormComponent {
       || dataToSave?.description !== selectedItem?.description;
   })
 
-  updateTitle(evt: Event) {
-    const item = this.selectedItem();
-    if (item) {
-      this.dataToSave.set({
-        ...item,
-        title: (evt.target as HTMLInputElement).value
-      })
-    }
-  }
-
-  updateDescription(evt: Event) {
-    const item = this.selectedItem();
-    if (item) {
-      this.dataToSave.set({
-        ...item,
-        description: (evt.target as HTMLInputElement).value
-      })
-    }
+  get isSaveDisabled(): boolean {
+    // null рассматриваем как "форма не валидна"
+    return (this.editForm()?.pristine ?? true) || (this.editForm()?.invalid ?? true);
   }
 
   save() {
-    this.todosService.editTodo(this.dataToSave()!);
-    this.toastService.showSuccess('Задача успешно обновлена');
+    const data = this.dataToSave();
+    this.todosService.editTodo({
+      ...data,
+      id: this.selectedItem().id,
+      status: data.status ? EStatus.COMPLETED : EStatus.IN_PROGRESS,
+    });
   }
 }

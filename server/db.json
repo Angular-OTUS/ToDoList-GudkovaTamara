@@ -3,7 +3,7 @@
     {
       "id": 1,
       "title": "Task 1",
-      "description": "Description 1",
+      "description": "Description 1 ggпиg",
       "completed": false,
       "status": "InProgress"
     },
@@ -17,7 +17,7 @@
     {
       "id": 3,
       "title": "Task 3",
-      "description": "Description 3",
+      "description": "Description 3 fddd",
       "completed": false,
       "status": "InProgress"
     },
@@ -26,13 +26,12 @@
       "title": "Task 4",
       "description": "Description 4",
       "completed": false,
-      "status": "completed"
+      "status": "InProgress"
     },
     {
       "id": 5,
       "title": "Task 5",
       "description": "Description 5",
-      "completed": false,
       "status": "completed"
     },
     {
@@ -41,12 +40,6 @@
       "description": "Description 6",
       "completed": false,
       "status": "completed"
-    },
-    {
-      "title": "",
-      "description": "kkku",
-      "id": 7,
-      "status": "InProgress"
     }
   ]
 }

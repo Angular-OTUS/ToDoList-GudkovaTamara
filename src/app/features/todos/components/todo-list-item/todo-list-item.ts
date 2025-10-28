@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
-import { AppButton } from '../../../../lib/ul/app-button/app-button';
 import { MatCardModule } from '@angular/material/card';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
 import { ToastService } from '../../../../core/services/toast/toast.service';
 import { TodosService } from '../../services/todos/todos.service';
 import { MatIconModule } from '@angular/material/icon';
+import { AppButton } from '../../../../lib/ui/app-button/app-button';
 
 @Component({
   selector: 'todo-list-item',
@@ -40,6 +40,7 @@ export class ToDoListItemComponent {
   }
 
   selectItem() {
+    console.log('selectItem', this.item())
     this.todosStateService.setSelectedItem(this.item());
   }
 

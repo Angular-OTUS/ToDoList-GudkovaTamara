@@ -16,6 +16,7 @@ export class TodosStateService {
   readonly isEditMode: Signal<boolean> = this._isEditMode.asReadonly();
 
   setSelectedItem(item: ToDoListItem) {
+    console.log('StateService', item)
     this._selectedItem.set(item);
     this._isEditMode.set(false);
   }

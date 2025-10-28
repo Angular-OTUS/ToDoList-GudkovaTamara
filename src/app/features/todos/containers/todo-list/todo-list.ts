@@ -4,15 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ToDoListItemComponent } from '../../components/todo-list-item/todo-list-item';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AppButton } from '../../../../lib/ul/app-button/app-button';
 import { MatCardModule } from '@angular/material/card';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { TodosService } from '../../services/todos/todos.service';
 import { EditTodoFormComponent } from '../../components/edit-todo-form/edit-todo-form';
-import { ToastService } from '../../../../core/services/toast/toast.service';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
 import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AppButton } from '../../../../lib/ui/app-button/app-button';
 
 @Component({
   selector: 'app-to-do-list',
@@ -26,8 +24,6 @@ import { AsyncPipe } from '@angular/common';
     TooltipDirective,
     EditTodoFormComponent,
     AppButton,
-
-    // AsyncPipe
   ],
   templateUrl: './todo-list.html',
   styleUrl: './todo-list.scss',
