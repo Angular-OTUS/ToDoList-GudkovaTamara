@@ -3,11 +3,11 @@ import { EStatus, ToDoListItem } from '../../../types/types';
 import { MatInputModule } from '@angular/material/input';
 import { TodosService } from '../../services/todos/todos.service';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
-import { ToastService } from '../../../../core/services/toast/toast.service';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
+import { MatCardModule } from '@angular/material/card';
 
 type DataToSave = {
   title: string;
@@ -22,6 +22,7 @@ type DataToSave = {
 
     MatInputModule,
     MatCheckboxModule,
+    MatCardModule,
 
     AppButton,
     TooltipDirective,
@@ -33,7 +34,6 @@ type DataToSave = {
 export class EditTodoFormComponent {
 
   private todosService = inject(TodosService);
-  private toastService = inject(ToastService);
   private todosStateService = inject(TodosStateService);
 
   isEditMode = this.todosStateService.isEditMode;
@@ -97,5 +97,10 @@ export class EditTodoFormComponent {
       id: this.selectedItem().id,
       status: data.status ? EStatus.COMPLETED : EStatus.IN_PROGRESS,
     });
+    this.resetFormState();
+  }
+
+  resetFormState () {
+    this.editForm()?.form.markAsPristine();
   }
 }

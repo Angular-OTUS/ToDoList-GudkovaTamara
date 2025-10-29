@@ -1,0 +1,55 @@
+<form
+  #form="ngForm"
+  (ngSubmit)="addItem()"
+  class="todo-form"
+>
+<mat-card class="new-todo-form">
+  <mat-card-header>
+    <mat-card-title>Новая задача</mat-card-title>
+  </mat-card-header>
+
+  <div>
+    <span>Задача выполнена</span>
+    <mat-checkbox
+      name="title"
+      [(ngModel)]="newTodoData.status"
+    />
+  </div>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Название</mat-label>
+    <input
+      matInput
+      name="title"
+      [(ngModel)]="newTodoData.title"
+      placeholder="Введите название задачи"
+    >
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Описание</mat-label>
+    <textarea
+      matInput
+      name="description"
+      [(ngModel)]="newTodoData.description"
+      required
+      minlength="5"
+      #description="ngModel"
+      placeholder="Введите описание задачи"
+    ></textarea>
+    @if (description.errors?.['required']) {
+      <mat-error>Поле обязательно для заполнения</mat-error>
+    }
+    @if (description.errors?.['minlength']) {
+      <mat-error>Поле должно содержать не менее 5 символов</mat-error>
+    }
+  </mat-form-field>
+  <mat-card-actions class="new-todo-form__actions">
+    <app-button
+      btn-title="Добавить задачу"
+      [isDisabled]="!!form.invalid || !!form.pristine"
+      [appTooltip]="'Добавьте задачу'"
+      type="submit"
+    />
+  </mat-card-actions>
+</mat-card>
+</form>

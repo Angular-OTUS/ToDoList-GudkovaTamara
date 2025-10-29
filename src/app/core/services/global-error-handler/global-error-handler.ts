@@ -26,6 +26,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     }
     const errorContext = this.createErrorContext(error);
     this.logger.logError('Unhandled error', errorContext);
+    throw new Error(error);
   }
 
   private createErrorContext(error: any): any {

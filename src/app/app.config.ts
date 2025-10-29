@@ -18,12 +18,6 @@ export const appConfig: ApplicationConfig = {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
     },
-
-    // {
-    //   provide: ErrorHandler,
-    //   useClass: GlobalErrorHandler,
-    // },
-
     ...materialConfigProviders,
   ]
 };

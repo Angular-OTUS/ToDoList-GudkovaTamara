@@ -1,41 +1,35 @@
 <h1>ToDo List ({{ itemsCount() }})</h1>
-<mat-card class="new-todo-form">
-  <mat-card-header>
-    <mat-card-title>Новая задача</mat-card-title>
-  </mat-card-header>
-  <mat-form-field class="example-full-width">
-    <mat-label>Название</mat-label>
-    <input matInput [(ngModel)]="newTodoData.title" placeholder="Введите название задачи">
-  </mat-form-field>
-  <mat-form-field class="example-full-width">
-    <mat-label>Описание</mat-label>
-    <textarea matInput [(ngModel)]="newTodoData.description" placeholder="Введите описание задачи"></textarea>
-  </mat-form-field>
-  <mat-card-actions class="new-todo-form__actions">
-    <app-button btn-title="Добавить задачу" [isDisabled]="!newTodoData.description" [appTooltip]="'Добавьте задачу'"
-      (clicked)="addItem()" />
-  </mat-card-actions>
-</mat-card>
-<div class="columns-container">
-  <div class="column column-start">
-    @if (isLoading()) {
-    <div class="loading">
-      <mat-spinner></mat-spinner>
-    </div>
-    } @else {
-    <ul class="list">
-      @for (item of todos(); track item.id) {
-      <li class="list__item">
-        <todo-list-item [item]="item" />
-      </li>
+<app-new-todo-form />
+<section>
+  <mat-button-toggle-group
+    class="status"
+    [value]="filterValue()"
+    (change)="onFilterChange($event)"
+  >
+    <mat-button-toggle [value]="EStatusFilter.ALL">Все</mat-button-toggle>
+    <mat-button-toggle [value]="EStatusFilter.IN_PROGRESS">🔄 В прогрессе</mat-button-toggle>
+    <mat-button-toggle [value]="EStatusFilter.COMPLETED">✅ Завершено</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div class="columns-container">
+    <div class="column column-start">
+      @if (isLoading()) {
+      <app-spinner />
+      } @else {
+      <ul class="list">
+        @for (item of filteredTodos(); track item.id) {
+        <li class="list__item">
+          <todo-list-item [item]="item" />
+        </li>
+        }
+      </ul>
       }
-    </ul>
-    }
+    </div>
+    <div class="column">
+      @if (isSelected()) {
+      <app-edit-todo-form />
+      }
+    </div>
   </div>
-  <div class="column">
-    @if (!!selectedItem()) {
-    <app-edit-todo-form />
-    }
-  </div>
-</div>
+</section>
 

@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SpinnerComponent } from './spinner';
 
-import { NewTodoFormComponent } from './new-todo-form.component';
-
-describe('NewTodoFormComponent', () => {
-  let component: NewTodoFormComponent;
-  let fixture: ComponentFixture<NewTodoFormComponent>;
+describe('Spinner', () => {
+  let component: SpinnerComponent;
+  let fixture: ComponentFixture<SpinnerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NewTodoFormComponent]
+      imports: [SpinnerComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NewTodoFormComponent);
+    fixture = TestBed.createComponent(SpinnerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

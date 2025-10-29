@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { ToDoListItem } from '../../../types/types';
 
 @Injectable({
@@ -13,6 +13,7 @@ export class TodosStateService {
   // Public signals
   readonly todos: Signal<ToDoListItem[]> = this._todos.asReadonly();
   readonly selectedItem: Signal<ToDoListItem | null> = this._selectedItem.asReadonly();
+  readonly isSelected: Signal<boolean> = computed(() => !!this.selectedItem());
   readonly isEditMode: Signal<boolean> = this._isEditMode.asReadonly();
 
   setSelectedItem(item: ToDoListItem) {

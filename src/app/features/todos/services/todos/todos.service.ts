@@ -1,8 +1,7 @@
 import { computed, DestroyRef, inject, Injectable, Injector, Signal, signal, WritableSignal } from '@angular/core';
-import { ToDoListItem } from '../../../types/types';
-import { TO_DO_LIST_DATA } from './todo-list-data';
+import { EStatus, ToDoListItem } from '../../../types/types';
 import { TodosApiService } from '../todos-api/todos-api.service';
-import { catchError, map, Observable, of, share, Subject, tap } from 'rxjs';
+import { catchError, map, of, tap } from 'rxjs';
 import { ToastService } from '../../../../core/services/toast/toast.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -28,7 +27,7 @@ export class TodosService {
     this.todosApiService.createTodo({
       ...todo,
       title: todo.title ?? this.getDefaultTitle(newTodoId.toString()),
-      completed: todo.completed ?? false,
+      status: EStatus.IN_PROGRESS,
       id: newTodoId,
     }).pipe(
       takeUntilDestroyed(this.destroyRef),
