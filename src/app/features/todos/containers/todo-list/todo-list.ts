@@ -50,13 +50,15 @@ export class ToDoListComponent implements OnInit {
 
   filteredTodos = computed(() => {
     const filter = this.filterValue();
-    if (filter === EStatusFilter.IN_PROGRESS) {
-      return this.todos().filter((todo) => todo.status === EStatus.IN_PROGRESS);
+
+    switch (filter) {
+      case EStatusFilter.IN_PROGRESS:
+        return this.todos().filter((todo) => todo.status === EStatus.IN_PROGRESS);
+      case EStatusFilter.COMPLETED:
+        return this.todos().filter((todo) => todo.status === EStatus.COMPLETED);
+      default:
+        return this.todos();
     }
-    if (filter === EStatusFilter.COMPLETED) {
-      return this.todos().filter((todo) => todo.status === EStatus.COMPLETED);
-    }
-    return this.todos();
   });
 
   ngOnInit() {
