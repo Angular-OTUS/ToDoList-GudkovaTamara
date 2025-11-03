@@ -1,6 +1,5 @@
-import { ComponentRef, createComponent, EnvironmentInjector, inject, Injectable, OnDestroy } from '@angular/core';
+import { ComponentRef, createComponent, EnvironmentInjector, inject, Injectable, OnDestroy, OutputRefSubscription } from '@angular/core';
 import { ToastConfig, ToastModel } from './types';
-import { Subscription } from 'rxjs';
 import { ToastComponent } from '../../../lib/ui/toast/toast';
 
 // Дефолтные настройки
@@ -25,6 +24,12 @@ export class ToastService implements OnDestroy {
     // Автоматически удаляем старые тосты при превышении лимита
     if (this.toasts.length > this.MAX_TOASTS) {
       const oldestToast = this.toasts.shift(); // Удаляем самый старый
+      if (oldestToast?.id) {
+        this.destroyToast(oldestToast.id);
+      } else {
+        console.error('Не удалось удалить старый тост');
+      }
+
       oldestToast?.ref?.destroy();
     }
   }
@@ -36,7 +41,7 @@ export class ToastService implements OnDestroy {
     this.removeOldestIfNeeded();
 
     // Создаем нормализованный конфиг с дефолтными значениями
-    const finalConfig = { ...DEFAULT_TOAST_CONFIG, ...config };
+    const finalConfig = this.getFinalConfig(config);
 
     const toastRef = this.createToastComponent(finalConfig);
     this.setupToastBehavior(toastRef, toastId, finalConfig);
@@ -98,7 +103,7 @@ export class ToastService implements OnDestroy {
     this.toasts = this.toasts.filter(toast => toast.id !== id);
   }
 
-  private setupCloseSubscription(toastRef: ComponentRef<ToastComponent>, toastId: string): Subscription {
+  private setupCloseSubscription(toastRef: ComponentRef<ToastComponent>, toastId: string): OutputRefSubscription {
     return toastRef.instance.closeToast.subscribe(() => {
       this.destroyToast(toastId);
     });
@@ -123,7 +128,7 @@ export class ToastService implements OnDestroy {
   private registerToast(
     toastRef: ComponentRef<ToastComponent>,
     toastId: string,
-    behavior: { subscription: any; timeoutId: number | null }
+    behavior: { subscription: OutputRefSubscription; timeoutId: number | null }
   ) {
     this.toasts.push({
       ref: toastRef,
@@ -131,6 +136,15 @@ export class ToastService implements OnDestroy {
       id: toastId,
       timeoutId: behavior.timeoutId
     });
+  }
+
+  getFinalConfig (config: ToastConfig): Required<ToastConfig> {
+    return {
+      message: config.message,
+      type: config.type ?? DEFAULT_TOAST_CONFIG.type,
+      duration: config.duration ?? DEFAULT_TOAST_CONFIG.duration,
+      position: config.position ?? DEFAULT_TOAST_CONFIG.position,
+    };
   }
 
   // Публичные методы для ручного управления

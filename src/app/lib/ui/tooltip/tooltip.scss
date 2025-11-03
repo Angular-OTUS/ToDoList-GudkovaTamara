@@ -5,6 +5,7 @@
   border-radius: 4px;
   position: absolute;
   z-index: 1000;
+  pointer-events: none;
 
   /* Анимация появления */
   animation: tooltipFadeIn 0.3s ease-in-out;

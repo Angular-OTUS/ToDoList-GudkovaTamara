@@ -1,4 +1,4 @@
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, OutputRefSubscription } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 export type ToastConfig = {
@@ -10,7 +10,7 @@ export type ToastConfig = {
 
 export type ToastModel<T> = {
   ref: ComponentRef<T>;
-  subscription: Subscription;
+  subscription: OutputRefSubscription;
   id: string;
   timeoutId: number | null;
 }

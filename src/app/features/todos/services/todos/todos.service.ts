@@ -43,7 +43,7 @@ export class TodosService {
     ).subscribe();
   }
 
-  deleteTodo(id: number) {debugger
+  deleteTodo(id: number) {
     this.todosApiService.deleteTodo(id).pipe(
       takeUntilDestroyed(this.destroyRef),
       tap(() => {

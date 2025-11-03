@@ -1,10 +1,10 @@
 <div
   class="toast"
-  [class]="messageType"
+  [class]="messageType()"
 >
   <div class="toast-icon">{{ getIcon() }}</div>
   <div class="toast-content">
-    <span class="toast-message">{{ message }}</span>
+    <span class="toast-message">{{ message() }}</span>
   </div>
   <button class="toast-close" (click)="close()">Закрыть</button>
 </div>
