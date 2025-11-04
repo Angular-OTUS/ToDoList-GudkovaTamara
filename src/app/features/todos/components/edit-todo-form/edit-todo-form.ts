@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, Signal, signal, viewChild, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, Signal, signal, viewChild, WritableSignal } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { MatInputModule } from '@angular/material/input';
 import { TodosService } from '../../services/todos/todos.service';
@@ -36,12 +36,20 @@ export class EditTodoFormComponent {
   private todosService = inject(TodosService);
   private todosStateService = inject(TodosStateService);
 
+  itemId = input<number | null>(null);
+  editForm = viewChild<NgForm>('editForm');
+
   isEditMode = this.todosStateService.isEditMode;
+  EStatus = EStatus;
 
   constructor() {
     // Синхронизация при изменении selectedItem
     effect(() => {
-      const selectedItem: ToDoListItem = this.selectedItem();
+      const selectedItem = this.item();
+
+      if (!selectedItem) {
+        return;
+      }
       this.dataToSave.set({
         title: selectedItem.title,
         description: selectedItem.description,
@@ -50,13 +58,13 @@ export class EditTodoFormComponent {
     });
   }
 
-  selectedItem: Signal<ToDoListItem> = computed(() => {
-    const item = this.todosStateService.selectedItem();
-    console.log('form computed signal item', item)
-    if (!item) {
+  item: Signal<ToDoListItem | null> = computed(() => {
+    const itemId: number | null = this.itemId();
+    if (!itemId) {
       throw new Error('Selected item is null in EditTodoFormComponent - this should never happen');
     }
-    return item;
+
+    return this.todosStateService.todos().find((item) => item.id === itemId) ?? null;
   });
 
 
@@ -67,11 +75,6 @@ export class EditTodoFormComponent {
     status: false,
   });
 
-
-  EStatus = EStatus;
-
-  editForm = viewChild<NgForm>('editForm');
-
   title = computed(() => {
     return this.isEditMode()
       ? 'Редактировать задачу'
@@ -80,7 +83,7 @@ export class EditTodoFormComponent {
 
   isFormDirty = computed(() => {
     const dataToSave = this.dataToSave();
-    const selectedItem = this.selectedItem();
+    const selectedItem = this.item();
     return dataToSave?.title !== selectedItem?.title
       || dataToSave?.description !== selectedItem?.description;
   })
@@ -91,10 +94,15 @@ export class EditTodoFormComponent {
   }
 
   save() {
+    const itemId = this.item()?.id;
+
+    if (!itemId) {
+      return;
+    }
     const data = this.dataToSave();
     this.todosService.editTodo({
       ...data,
-      id: this.selectedItem().id,
+      id: itemId,
       status: data.status ? EStatus.COMPLETED : EStatus.IN_PROGRESS,
     });
     this.resetFormState();

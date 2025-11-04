@@ -6,24 +6,14 @@ import { ToDoListItem } from '../../../types/types';
 })
 export class TodosStateService {
 
-  private readonly _selectedItem: WritableSignal<ToDoListItem | null> = signal(null);
   private readonly _isEditMode: WritableSignal<boolean> = signal(false);
   private readonly _todos: WritableSignal<ToDoListItem[]> = signal([]);
 
   // Public signals
   readonly todos: Signal<ToDoListItem[]> = this._todos.asReadonly();
-  readonly selectedItem: Signal<ToDoListItem | null> = this._selectedItem.asReadonly();
-  readonly isSelected: Signal<boolean> = computed(() => !!this.selectedItem());
   readonly isEditMode: Signal<boolean> = this._isEditMode.asReadonly();
 
-  setSelectedItem(item: ToDoListItem) {
-    console.log('StateService', item)
-    this._selectedItem.set(item);
-    this._isEditMode.set(false);
-  }
-
-  setEditingItem(item: ToDoListItem) {
-    this._selectedItem.set(item);
+  setEditingItem() {
     this._isEditMode.set(true);
   }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, InputSignal, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { FormsModule } from '@angular/forms';
 import { ToDoListItemComponent } from '../../components/todo-list-item/todo-list-item';
@@ -7,7 +7,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TodosService } from '../../services/todos/todos.service';
 import { EditTodoFormComponent } from '../../components/edit-todo-form/edit-todo-form';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
-import { Observable } from 'rxjs';
 import { NewTodoFormComponent } from '../../components/new-todo-form/new-todo-form';
 import { SpinnerComponent } from '../../../../lib/ui/spinner/spinner';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -40,12 +39,18 @@ export class ToDoListComponent implements OnInit {
   private todosService: TodosService = inject(TodosService);
   private todosStateService: TodosStateService = inject(TodosStateService);
 
+  // Порядок generic параметров для input:
+  // Первый параметр: Выходной тип
+  // Второй параметр: Входной тип
+  selectedItemId = input.required<number, string>({
+    transform: (value: string) => +value
+  });
+
   todos: Signal<ToDoListItem[]> = this.todosStateService.todos;
   filterValue: WritableSignal<EStatusFilter> = signal(EStatusFilter.ALL);
 
   itemsCount: Signal<number> = this.todosService.countTodos;
   isLoading: WritableSignal<boolean> = this.todosService.isLoading;
-  isSelected: Signal<boolean> = this.todosStateService.isSelected;
   EStatusFilter = EStatusFilter;
 
   filteredTodos = computed(() => {

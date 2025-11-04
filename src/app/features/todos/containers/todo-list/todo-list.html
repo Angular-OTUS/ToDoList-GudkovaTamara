@@ -19,15 +19,18 @@
       <ul class="list">
         @for (item of filteredTodos(); track item.id) {
         <li class="list__item">
-          <todo-list-item [item]="item" />
+          <todo-list-item
+          [item]="item"
+          [isSelected]="item.id === selectedItemId()"
+        />
         </li>
         }
       </ul>
       }
     </div>
     <div class="column">
-      @if (isSelected()) {
-      <app-edit-todo-form />
+      @if (selectedItemId()) {
+      <app-edit-todo-form [itemId]="selectedItemId()" />
       }
     </div>
   </div>

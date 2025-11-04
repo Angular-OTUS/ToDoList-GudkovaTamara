@@ -1,5 +1,10 @@
-import { ApplicationConfig, ErrorHandler, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {
+  ApplicationConfig,
+  ErrorHandler,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection
+} from '@angular/core';
+import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 
@@ -19,5 +24,11 @@ export const appConfig: ApplicationConfig = {
       useClass: GlobalErrorHandler,
     },
     ...materialConfigProviders,
+
+    provideRouter(
+      routes,
+      withViewTransitions(),
+      withComponentInputBinding(),
+    ),
   ]
 };
