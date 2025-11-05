@@ -1,0 +1,10 @@
+.new-todo-form {
+  display: inline-flex;
+  width: clamp(300px, 45%, 1000px);
+  padding: 1.7rem;
+  gap: 1.7rem;
+
+  &__actions {
+    justify-content: flex-end;
+  }
+}

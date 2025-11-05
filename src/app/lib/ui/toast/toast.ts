@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, input, Input, output, Output, OutputEmitterRef } from '@angular/core';
 import { MessageType, ToastPosition } from './types';
 
 @Component({
@@ -8,11 +8,13 @@ import { MessageType, ToastPosition } from './types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToastComponent {
-  @Input() messageType: MessageType = 'info';
-  @Input() message: string = '';
-  @Input() duration: number = 5000;
-  @Input() position: ToastPosition = 'bottom-right';
-  @Output() closeToast  = new EventEmitter<void>();
+
+  messageType = input<MessageType>('info');
+  message = input<string>('');
+  duration = input<number>(5000);
+  position = input<ToastPosition>('bottom-right');
+
+  closeToast: OutputEmitterRef<void> = output<void>();
 
   getIcon(): string {
     const icons = {
@@ -21,7 +23,7 @@ export class ToastComponent {
       'warning': '⚠️',
       'info': 'ℹ️'
     };
-    return icons[this.messageType];
+    return icons[this.messageType()];
   }
 
   close(): void {

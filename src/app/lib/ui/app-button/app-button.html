@@ -5,5 +5,6 @@
   type="{{ type() }}"
   (click)="handleClick($event)"
 >
+    <ng-content />
     {{ title() }}
 </button>

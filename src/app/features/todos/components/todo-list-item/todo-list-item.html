@@ -7,18 +7,19 @@
   [class.selected]="isSelected()"
 >
   <mat-card-header class="item__title">
-    <mat-card-title [class.completed]="itemData.completed">
+    <mat-card-title [class.completed]="itemData.status === Status.COMPLETED">
       {{ itemData.title }}
     </mat-card-title>
-    <span>{{ itemData.completed ? '✔️' : '⏰' }}</span>
+    <span>{{ statusIconsMap.get(itemData.status) ?? '' }}</span>
   </mat-card-header>
   <p>{{ itemData.description }}</p>
   <mat-card-actions class="item__actions">
     <app-button
-      btn-title="Удалить задачу"
       [stopPropagation]="true"
       [appTooltip]="'Удалить задачу'"
       (clicked)="deleteItem(itemData.id)"
-    />
+    >
+    <mat-icon fontIcon="delete_forever" />
+    </app-button>
   </mat-card-actions>
 </mat-card>

@@ -1,16 +1,22 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, Signal, signal, WritableSignal } from '@angular/core';
-import { ToDoListItem } from '../../../types/types';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { EStatus, ToDoListItem } from '../../../types/types';
 import { FormsModule } from '@angular/forms';
 import { ToDoListItemComponent } from '../../components/todo-list-item/todo-list-item';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AppButton } from '../../../../lib/ul/app-button/app-button';
-import { MatCardModule } from '@angular/material/card';
-import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { TodosService } from '../../services/todos/todos.service';
 import { EditTodoFormComponent } from '../../components/edit-todo-form/edit-todo-form';
-import { ToastService } from '../../../../core/services/toast/toast.service';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
+import { Observable } from 'rxjs';
+import { NewTodoFormComponent } from '../../components/new-todo-form/new-todo-form';
+import { SpinnerComponent } from '../../../../lib/ui/spinner/spinner';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+
+enum EStatusFilter {
+  ALL = 'all',
+  IN_PROGRESS = 'inProgress',
+  COMPLETED = 'completed',
+}
 
 @Component({
   selector: 'app-to-do-list',
@@ -19,11 +25,11 @@ import { TodosStateService } from '../../services/todos-state/todos-state-servic
     ToDoListItemComponent,
     MatInputModule,
     MatProgressSpinnerModule,
-    MatCardModule,
+    MatButtonToggleModule,
 
-    TooltipDirective,
     EditTodoFormComponent,
-    AppButton,
+    NewTodoFormComponent,
+    SpinnerComponent,
   ],
   templateUrl: './todo-list.html',
   styleUrl: './todo-list.scss',
@@ -32,24 +38,37 @@ import { TodosStateService } from '../../services/todos-state/todos-state-servic
 export class ToDoListComponent implements OnInit {
 
   private todosService: TodosService = inject(TodosService);
-  private toastService: ToastService = inject(ToastService);
   private todosStateService: TodosStateService = inject(TodosStateService);
 
-  toDoItems: Signal<ToDoListItem[]> = this.todosService.todos;
-  newTodoData: ToDoListItem = {} as ToDoListItem;
-  itemsCount: Signal<number> = this.todosService.countTodos;
-  isLoading: WritableSignal<boolean> = signal(true);
-  selectedItem: Signal<ToDoListItem | null> = this.todosStateService.selectedItem;
+  todos: Signal<ToDoListItem[]> = this.todosStateService.todos;
+  filterValue: WritableSignal<EStatusFilter> = signal(EStatusFilter.ALL);
 
-  addItem () {
-    this.todosService.addTodo(this.newTodoData);
-    this.newTodoData = {} as ToDoListItem;
-    this.toastService.showSuccess('Задача успешно добавлена');
+  itemsCount: Signal<number> = this.todosService.countTodos;
+  isLoading: WritableSignal<boolean> = this.todosService.isLoading;
+  isSelected: Signal<boolean> = this.todosStateService.isSelected;
+  EStatusFilter = EStatusFilter;
+
+  filteredTodos = computed(() => {
+    const filter = this.filterValue();
+
+    switch (filter) {
+      case EStatusFilter.IN_PROGRESS:
+        return this.todos().filter((todo) => todo.status === EStatus.IN_PROGRESS);
+      case EStatusFilter.COMPLETED:
+        return this.todos().filter((todo) => todo.status === EStatus.COMPLETED);
+      default:
+        return this.todos();
+    }
+  });
+
+  ngOnInit() {
+    this.todosService.loadTodos();
   }
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.isLoading.set(false);
-    }, 500);
+  // Обработчик изменения фильтра
+  onFilterChange(event: MatButtonToggleChange) {
+    const newFilter = event.value;
+    this.filterValue.set(newFilter);
+    console.log('Фильтр изменен на:', newFilter);
   }
 }

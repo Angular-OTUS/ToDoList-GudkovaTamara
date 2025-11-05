@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { ToastService } from './toast.service';
 
-describe('Toast', () => {
-  let service: ToastService;
+import { GlobalErrorHandler } from './global-error-handler';
+
+describe('GlobalErrorHandler', () => {
+  let service: GlobalErrorHandler;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ToastService);
+    service = TestBed.inject(GlobalErrorHandler);
   });
 
   it('should be created', () => {
