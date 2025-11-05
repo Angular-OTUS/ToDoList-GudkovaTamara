@@ -49,6 +49,5 @@ export class ToDoListItemComponent {
 
   deleteItem (id: number) {
     this.todosService.deleteTodo(id);
-    this.toastService.showSuccess('Задача успешно удалена');
   }
 }

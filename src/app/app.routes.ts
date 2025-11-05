@@ -11,7 +11,7 @@ export const routes: Routes = [
     path: 'tasks',
     component: ToDoListComponent,
   },
-    {
+  {
     path: 'tasks/:selectedItemId',
     component: ToDoListComponent,
   },

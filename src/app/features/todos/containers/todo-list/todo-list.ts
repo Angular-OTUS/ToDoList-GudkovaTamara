@@ -18,7 +18,7 @@ enum EStatusFilter {
 }
 
 @Component({
-  selector: 'app-to-do-list',
+  selector: 'app-todo-list',
   imports: [
     FormsModule,
     ToDoListItemComponent,
