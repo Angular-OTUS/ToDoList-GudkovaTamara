@@ -7,6 +7,7 @@ import { ToastService } from '../../../../core/services/toast/toast.service';
 import { TodosService } from '../../services/todos/todos.service';
 import { MatIconModule } from '@angular/material/icon';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'todo-list-item',
@@ -25,8 +26,10 @@ export class ToDoListItemComponent {
   private todosStateService = inject(TodosStateService);
   private todosService = inject(TodosService);
   private toastService = inject(ToastService);
+  private router = inject(Router);
 
   item: InputSignal<ToDoListItem> = input.required<ToDoListItem>();
+  isSelected: InputSignal<boolean> = input<boolean>(false);
   deleted: OutputEmitterRef<ToDoListItem['id']> = output<ToDoListItem['id']>();
   Status = EStatus
 
@@ -35,21 +38,16 @@ export class ToDoListItemComponent {
     [EStatus.IN_PROGRESS, '⏰'],
   ])
 
-  isSelected () {
-    return this.item().id === this.todosStateService.selectedItem()?.id
-  }
-
   selectItem() {
-    console.log('selectItem', this.item())
-    this.todosStateService.setSelectedItem(this.item());
+    this.router.navigate(['tasks', this.item().id]);
   }
 
   handleDblClick() {
-    this.todosStateService.setEditingItem(this.item());
+    this.todosStateService.setEditingItem();
+    this.router.navigate(['tasks', this.item().id]);
   }
 
   deleteItem (id: number) {
     this.todosService.deleteTodo(id);
-    this.toastService.showSuccess('Задача успешно удалена');
   }
 }
