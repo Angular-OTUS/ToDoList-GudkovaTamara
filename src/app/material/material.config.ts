@@ -2,7 +2,7 @@ import { MAT_CARD_CONFIG } from '@angular/material/card';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 
 const appearanceConfig = {
-  appearance: 'outline'
+  appearance: 'outline',
 };
 
 export const materialFormFieldConfig = {
@@ -17,15 +17,15 @@ export const materialFormFieldConfig = {
 export const materialConfigProviders = [
   {
     provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-    useValue: materialFormFieldConfig
+    useValue: materialFormFieldConfig,
   },
   {
     provide: MAT_CARD_CONFIG,
-    useValue: appearanceConfig
-  }
+    useValue: appearanceConfig,
+  },
 ];
 
 export const materialFormFieldProvider = {
   provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-  useValue: materialFormFieldConfig
+  useValue: materialFormFieldConfig,
 };

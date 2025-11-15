@@ -22,7 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   ],
   templateUrl: './new-todo-form.html',
   styleUrl: './new-todo-form.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewTodoFormComponent {
 

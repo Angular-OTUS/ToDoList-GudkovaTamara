@@ -8,7 +8,7 @@ describe('EditTodoForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditTodoForm]
+      imports: [EditTodoForm],
     })
     .compileComponents();
 

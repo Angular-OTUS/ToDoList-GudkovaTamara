@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, input, InputSignal } from '@angular
   imports: [],
   templateUrl: './tooltip.html',
   styleUrl: './tooltip.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TooltipComponent {
 

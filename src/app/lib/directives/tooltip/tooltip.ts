@@ -3,7 +3,7 @@ import { TooltipComponent } from '../../ui/tooltip/tooltip';
 
 @Directive({
   selector: '[appTooltip]', // Это атрибутная директива
-  standalone: true
+  standalone: true,
 })
 export class TooltipDirective {
 

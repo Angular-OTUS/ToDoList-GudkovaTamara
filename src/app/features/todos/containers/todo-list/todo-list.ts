@@ -43,7 +43,7 @@ export class ToDoListComponent implements OnInit {
   // Первый параметр: Выходной тип
   // Второй параметр: Входной тип
   selectedItemId = input.required<number, string>({
-    transform: (value: string) => +value
+    transform: (value: string) => +value,
   });
 
   todos: Signal<ToDoListItem[]> = this.todosStateService.todos;

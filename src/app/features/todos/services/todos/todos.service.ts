@@ -8,7 +8,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TodosStateService } from '../todos-state/todos-state-service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodosService {
 
@@ -39,7 +39,7 @@ export class TodosService {
         console.error(e.message, e.stack, e.status);
         this.toastService.showError('Ошибка добавления задачи');
         return of([]);
-      })
+      }),
     ).subscribe();
   }
 
@@ -54,7 +54,7 @@ export class TodosService {
         console.error(e.message, e.stack, e.status);
         this.toastService.showError('Ошибка удаления задачи');
         return of([]);
-      })
+      }),
     ).subscribe();
   }
 
@@ -73,7 +73,7 @@ export class TodosService {
         console.error(e.message, e.stack, e.status);
         this.toastService.showError('Ошибка обновления задачи');
         return of([]);
-      })
+      }),
     ).subscribe();
   }
 

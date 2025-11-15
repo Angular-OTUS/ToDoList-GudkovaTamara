@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
   ],
   templateUrl: './todo-list-item.html',
   styleUrl: './todo-list-item.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToDoListItemComponent {
 
