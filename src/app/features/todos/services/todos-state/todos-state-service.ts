@@ -2,7 +2,7 @@ import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/c
 import { ToDoListItem } from '../../../types/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodosStateService {
 

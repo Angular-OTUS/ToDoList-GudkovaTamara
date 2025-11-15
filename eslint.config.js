@@ -26,10 +26,11 @@ module.exports = tseslint.config(
         "error",
         {
           type: "element",
-          prefix: "app",
+          prefix: ["app", ""],
           style: "kebab-case",
         },
       ],
+      "@angular-eslint/prefer-on-push-component-change-detection": "warn",
       "comma-dangle": [2, "always-multiline"],
     },
   },

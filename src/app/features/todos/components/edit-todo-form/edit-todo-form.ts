@@ -9,7 +9,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { MatCardModule } from '@angular/material/card';
 
-type DataToSave = {
+interface DataToSave {
   title: string;
   description: string;
   status: boolean;
@@ -29,7 +29,7 @@ type DataToSave = {
   ],
   templateUrl: './edit-todo-form.html',
   styleUrl: './edit-todo-form.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditTodoFormComponent {
 
@@ -53,7 +53,7 @@ export class EditTodoFormComponent {
       this.dataToSave.set({
         title: selectedItem.title,
         description: selectedItem.description,
-        status: selectedItem.status === EStatus.COMPLETED
+        status: selectedItem.status === EStatus.COMPLETED,
       });
     });
   }

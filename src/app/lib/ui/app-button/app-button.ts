@@ -8,7 +8,7 @@ import { MatButtonAppearance, MatButtonModule } from '@angular/material/button';
   ],
   templateUrl: './app-button.html',
   styleUrl: './app-button.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppButton {
 

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ToDoListItem } from '../../../types/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodosApiService {
 

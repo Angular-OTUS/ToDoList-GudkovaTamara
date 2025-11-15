@@ -5,7 +5,7 @@ type TValidLevel = typeof ValidLevels[number];
 type t = keyof Console
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoggerService {
 
@@ -34,7 +34,7 @@ export class LoggerService {
       level: level,
       message,
       timestamp: new Date(),
-      context
+      context,
     };
 
     // Консоль для разработки

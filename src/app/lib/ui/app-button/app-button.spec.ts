@@ -8,7 +8,7 @@ describe('AppButton', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppButton]
+      imports: [AppButton],
     })
     .compileComponents();
 

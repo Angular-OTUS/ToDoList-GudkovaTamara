@@ -8,7 +8,7 @@ describe('Tooltip', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Tooltip]
+      imports: [Tooltip],
     })
     .compileComponents();
 

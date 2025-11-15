@@ -7,7 +7,7 @@ describe('Spinner', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SpinnerComponent]
+      imports: [SpinnerComponent],
     })
     .compileComponents();
 

@@ -1,7 +1,7 @@
 import { Directive, Input, OnChanges, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
-  selector: '[appShowIf]'
+  selector: '[appShowIf]',
 })
 export class ShowIfDirective implements OnChanges {
 

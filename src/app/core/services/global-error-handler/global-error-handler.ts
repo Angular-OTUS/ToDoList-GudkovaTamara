@@ -4,7 +4,7 @@ import { LoggerService } from '../logger/logger.service';
 import { ToastService } from '../toast/toast.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GlobalErrorHandler implements ErrorHandler {
 
@@ -17,8 +17,8 @@ export class GlobalErrorHandler implements ErrorHandler {
         message: error.message,
         online: navigator.onLine,
         url: window.location.href,
-        status: error.status,
-        type: 'network'
+        status: error?.status,
+        type: 'network',
       });
 
       this.showNetworkErrorNotification();
@@ -29,7 +29,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     throw new Error(error);
   }
 
-  private createErrorContext(error: any): any {
+  private createErrorContext(error: Error): any {
     return {
       message: error?.message || error?.toString(),
       stack: error?.stack,

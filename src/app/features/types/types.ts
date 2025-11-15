@@ -1,4 +1,4 @@
-export type ToDoListItem = {
+export interface ToDoListItem {
   id: number;
   title: string;
   description: string;

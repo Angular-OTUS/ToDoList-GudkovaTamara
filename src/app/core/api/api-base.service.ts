@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClientOptions } from './types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiBaseService {
 

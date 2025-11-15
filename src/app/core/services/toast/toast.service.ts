@@ -6,7 +6,7 @@ import { ToastComponent } from '../../../lib/ui/toast/toast';
 const DEFAULT_TOAST_CONFIG: Required<Omit<ToastConfig, 'message'>> = {
   type: 'info',
   duration: 5000,
-  position: 'bottom-right'
+  position: 'bottom-right',
 };
 
 @Injectable({ providedIn: 'root' })
@@ -49,7 +49,7 @@ export class ToastService implements OnDestroy {
 
   private createToastComponent(config: Required<ToastConfig>): ComponentRef<ToastComponent> {
     const toastRef = createComponent(ToastComponent, {
-      environmentInjector: this.environmentInjector
+      environmentInjector: this.environmentInjector,
     });
 
     toastRef.setInput('message', config.message);
@@ -65,7 +65,7 @@ export class ToastService implements OnDestroy {
   private setupToastBehavior(
     toastRef: ComponentRef<ToastComponent>,
     toastId: string,
-    finalConfig: Required<ToastConfig>
+    finalConfig: Required<ToastConfig>,
   ): void {
     const closeSubscription = this.setupCloseSubscription(toastRef, toastId);
     const timeoutId = this.setupAutoClose(toastId, finalConfig.duration);
@@ -73,7 +73,7 @@ export class ToastService implements OnDestroy {
     this.registerToast(
       toastRef,
       toastId,
-      { subscription: closeSubscription, timeoutId }
+      { subscription: closeSubscription, timeoutId },
     );
   }
 
@@ -128,13 +128,13 @@ export class ToastService implements OnDestroy {
   private registerToast(
     toastRef: ComponentRef<ToastComponent>,
     toastId: string,
-    behavior: { subscription: OutputRefSubscription; timeoutId: number | null }
+    behavior: { subscription: OutputRefSubscription; timeoutId: number | null },
   ) {
     this.toasts.push({
       ref: toastRef,
       subscription: behavior.subscription,
       id: toastId,
-      timeoutId: behavior.timeoutId
+      timeoutId: behavior.timeoutId,
     });
   }
 
@@ -161,7 +161,7 @@ export class ToastService implements OnDestroy {
     this.show({
       message,
       type: 'success',
-      duration
+      duration,
     });
   }
 
@@ -169,7 +169,7 @@ export class ToastService implements OnDestroy {
     this.show({
       message,
       type: 'error',
-      duration
+      duration,
     });
   }
 
@@ -177,7 +177,7 @@ export class ToastService implements OnDestroy {
     this.show({
       message,
       type: 'warning',
-      duration
+      duration,
     });
   }
 
@@ -185,7 +185,7 @@ export class ToastService implements OnDestroy {
     this.show({
       message,
       type: 'info',
-      duration
+      duration,
     });
   }
 }

@@ -5,7 +5,7 @@ import { MessageType, ToastPosition } from './types';
   selector: 'app-toast',
   templateUrl: './toast.html',
   styleUrl: './toast.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToastComponent {
 
@@ -21,7 +21,7 @@ export class ToastComponent {
       'success': '✅',
       'error': '❌',
       'warning': '⚠️',
-      'info': 'ℹ️'
+      'info': 'ℹ️',
     };
     return icons[this.messageType()];
   }
