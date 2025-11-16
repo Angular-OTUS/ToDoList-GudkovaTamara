@@ -4,10 +4,11 @@ import { MatCardModule } from '@angular/material/card';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
 import { ToastService } from '../../../../core/services/toast/toast.service';
-import { TodosService } from '../../services/todos/todos.service';
+import { TodosDataService } from '../../services/todos-data/todos-data.service';
 import { MatIconModule } from '@angular/material/icon';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { Router } from '@angular/router';
+import { ERoute } from '../../../../routing/types';
 
 @Component({
   selector: 'todo-list-item',
@@ -24,7 +25,7 @@ import { Router } from '@angular/router';
 export class ToDoListItemComponent {
 
   private todosStateService = inject(TodosStateService);
-  private todosService = inject(TodosService);
+  private todosDataService = inject(TodosDataService);
   private toastService = inject(ToastService);
   private router = inject(Router);
 
@@ -39,15 +40,15 @@ export class ToDoListItemComponent {
   ])
 
   selectItem() {
-    this.router.navigate(['tasks', this.item().id]);
+    this.router.navigate([ERoute.BACKLOG, this.item().id]);
   }
 
   handleDblClick() {
     this.todosStateService.setEditingItem();
-    this.router.navigate(['tasks', this.item().id]);
+    this.router.navigate([ERoute.BACKLOG, this.item().id]);
   }
 
   deleteItem (id: number) {
-    this.todosService.deleteTodo(id);
+    this.todosDataService.deleteTodo(id);
   }
 }

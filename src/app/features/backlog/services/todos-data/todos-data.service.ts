@@ -6,21 +6,23 @@ import { ToastService } from '../../../../core/services/toast/toast.service';
 import { LoggerService } from '../../../../core/services/logger/logger.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TodosStateService } from '../todos-state/todos-state-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TodosService {
+export class TodosDataService {
 
   todosApiService = inject(TodosApiService);
   toastService = inject(ToastService);
   loggerService = inject(LoggerService);
   stateService = inject(TodosStateService);
   private destroyRef = inject(DestroyRef);
+  private route = inject(ActivatedRoute);
 
   countTodos = computed(() => this.stateService.todos().length);
-
   isLoading: WritableSignal<boolean> = signal(false);
+  selectedItemId: WritableSignal<number | null> = signal(null);
 
   addTodo(todo: ToDoListItem) {
     const newTodoId = this.countTodos() + 1;
@@ -64,8 +66,7 @@ export class TodosService {
       title: todo.title ?? this.getDefaultTitle(todo.id.toString()),
     }).pipe(
       takeUntilDestroyed(this.destroyRef),
-      tap((s) => {
-        console.log('s', s);
+      tap(() => {
         this.toastService.showSuccess('Задача успешно обновлена');
         this.loadTodos();
       }),

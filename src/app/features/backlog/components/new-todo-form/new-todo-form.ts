@@ -3,10 +3,10 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { ToDoListItem } from '../../../types/types';
-import { TodosService } from '../../services/todos/todos.service';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TodosDataService } from '../../services/todos-data/todos-data.service';
 
 @Component({
   selector: 'app-new-todo-form',
@@ -26,14 +26,14 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 })
 export class NewTodoFormComponent {
 
-  private todosService: TodosService = inject(TodosService);
+  private todosDataService: TodosDataService = inject(TodosDataService);
 
   form = viewChild<NgForm>('form');
 
   newTodoData: ToDoListItem = {} as ToDoListItem;
 
   addItem() {
-    this.todosService.addTodo(this.newTodoData);
+    this.todosDataService.addTodo(this.newTodoData);
     this.newTodoData = {} as ToDoListItem;
     this.resetFormState();
   }

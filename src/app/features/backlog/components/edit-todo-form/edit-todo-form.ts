@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, Signal, signal, viewChild, WritableSignal } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { MatInputModule } from '@angular/material/input';
-import { TodosService } from '../../services/todos/todos.service';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { TodosStateService } from '../../services/todos-state/todos-state-service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { MatCardModule } from '@angular/material/card';
+import { TodosDataService } from '../../services/todos-data/todos-data.service';
 
 interface DataToSave {
   title: string;
@@ -33,7 +33,7 @@ interface DataToSave {
 })
 export class EditTodoFormComponent {
 
-  private todosService = inject(TodosService);
+  private todosDataService = inject(TodosDataService);
   private todosStateService = inject(TodosStateService);
 
   itemId = input<number | null>(null);
@@ -100,7 +100,7 @@ export class EditTodoFormComponent {
       return;
     }
     const data = this.dataToSave();
-    this.todosService.editTodo({
+    this.todosDataService.editTodo({
       ...data,
       id: itemId,
       status: data.status ? EStatus.COMPLETED : EStatus.IN_PROGRESS,
