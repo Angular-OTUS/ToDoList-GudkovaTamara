@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, InputSignal, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { FormsModule } from '@angular/forms';
 import { ToDoListItemComponent } from '../../components/todo-list-item/todo-list-item';
@@ -10,6 +10,13 @@ import { NewTodoFormComponent } from '../../components/new-todo-form/new-todo-fo
 import { SpinnerComponent } from '../../../../lib/ui/spinner/spinner';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TodosDataService } from '../../services/todos-data/todos-data.service';
+import { BacklogStateService } from '../../services/basckog-state/backlog-state';
+import { ActivatedRoute } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 enum EStatusFilter {
   ALL = 'all',
@@ -21,14 +28,22 @@ enum EStatusFilter {
   selector: 'app-todo-list',
   imports: [
     FormsModule,
+
     ToDoListItemComponent,
     MatInputModule,
     MatProgressSpinnerModule,
     MatButtonToggleModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatButtonModule,
+    MatListModule,
 
     EditTodoFormComponent,
     NewTodoFormComponent,
     SpinnerComponent,
+  ],
+  providers: [
+    BacklogStateService,
   ],
   templateUrl: './todo-list.html',
   styleUrl: './todo-list.scss',
@@ -36,13 +51,18 @@ enum EStatusFilter {
 })
 export class ToDoListComponent implements OnInit {
 
+  // private route = inject(ActivatedRoute); // Это правильный ActivatedRoute
+
   private todosDataService: TodosDataService = inject(TodosDataService);
   private todosStateService: TodosStateService = inject(TodosStateService);
+  private backlogStateService = inject(BacklogStateService);
+
+  destroyRef = inject(DestroyRef);
 
   // Порядок generic параметров для input:
   // Первый параметр: Выходной тип
   // Второй параметр: Входной тип
-  selectedItemId = input.required<number>();
+  selectedItemId = this.backlogStateService.selectedItemId;
 
   todos: Signal<ToDoListItem[]> = this.todosStateService.todos;
   filterValue: WritableSignal<EStatusFilter> = signal(EStatusFilter.ALL);
@@ -72,6 +92,5 @@ export class ToDoListComponent implements OnInit {
   onFilterChange(event: MatButtonToggleChange) {
     const newFilter = event.value;
     this.filterValue.set(newFilter);
-    console.log('Фильтр изменен на:', newFilter);
   }
 }

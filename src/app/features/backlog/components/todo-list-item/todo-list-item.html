@@ -1,12 +1,10 @@
-@let itemData = item();
-
-<mat-card
+<div
   class="item"
-  (click)="selectItem()"
-  (dblclick)="handleDblClick()"
+  (click)="selectItem($event)"
+  (dblclick)="handleDblClick($event)"
   [class.selected]="isSelected()"
->
-  <mat-card-header class="item__title">
+>{{ item().title }}
+  <!-- <mat-card-header class="item__title">
     <mat-card-title [class.completed]="itemData.status === Status.COMPLETED">
       {{ itemData.title }}
     </mat-card-title>
@@ -21,5 +19,5 @@
     >
     <mat-icon fontIcon="delete_forever" />
     </app-button>
-  </mat-card-actions>
-</mat-card>
+  </mat-card-actions> -->
+</div>

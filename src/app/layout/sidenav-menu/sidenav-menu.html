@@ -1,10 +1,10 @@
 <mat-nav-list class="menu">
-  <button mat-button routerLink="/todos" routerLinkActive="active" class="menu__item">
-    <mat-icon mat-list-icon>list</mat-icon>
-    <span mat-line>Tasks Board</span>
-  </button>
-  <button mat-button routerLink="/todos" routerLinkActive="active" class="menu__item">
+  <button mat-button [routerLink]="Eroute.BACKLOG" routerLinkActive="active" class="menu__item">
     <mat-icon mat-list-icon>list</mat-icon>
     <span mat-line>Tasks Backlog</span>
+  </button>
+  <button mat-button [routerLink]="Eroute.BOARD" routerLinkActive="active" class="menu__item">
+    <mat-icon mat-list-icon>list</mat-icon>
+    <span mat-line>Tasks Board</span>
   </button>
 </mat-nav-list>

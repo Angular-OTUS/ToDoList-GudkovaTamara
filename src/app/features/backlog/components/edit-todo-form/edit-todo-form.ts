@@ -8,6 +8,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { MatCardModule } from '@angular/material/card';
 import { TodosDataService } from '../../services/todos-data/todos-data.service';
+import { BacklogStateService } from '../../services/basckog-state/backlog-state';
+import { ActivatedRoute } from '@angular/router';
 
 interface DataToSave {
   title: string;
@@ -33,16 +35,21 @@ interface DataToSave {
 })
 export class EditTodoFormComponent {
 
+  private route = inject(ActivatedRoute);
+
   private todosDataService = inject(TodosDataService);
   private todosStateService = inject(TodosStateService);
+  private backlogStateService = inject(BacklogStateService);
 
-  itemId = input<number | null>(null);
-  editForm = viewChild<NgForm>('editForm');
+  itemId = this.backlogStateService.selectedItemId;
+  form = viewChild<NgForm>('form');
 
-  isEditMode = this.todosStateService.isEditMode;
+  isEditMode = this.backlogStateService.isEditMode;
   EStatus = EStatus;
 
   constructor() {
+    // this.backlogStateService.watchRouteParams(this.route);
+
     // Синхронизация при изменении selectedItem
     effect(() => {
       const selectedItem = this.item();
@@ -56,13 +63,18 @@ export class EditTodoFormComponent {
         status: selectedItem.status === EStatus.COMPLETED,
       });
     });
+
+
+    effect(() => {
+    console.log('🕒 COMPONENT - isEditMode:', this.isEditMode(), 'at:', Date.now());
+  });
   }
 
   item: Signal<ToDoListItem | null> = computed(() => {
     const itemId: number | null = this.itemId();
-    if (!itemId) {
-      throw new Error('Selected item is null in EditTodoFormComponent - this should never happen');
-    }
+    // if (!itemId) {
+    //   throw new Error('Selected item is null in EditTodoFormComponent - this should never happen');
+    // }
 
     return this.todosStateService.todos().find((item) => item.id === itemId) ?? null;
   });
@@ -90,7 +102,7 @@ export class EditTodoFormComponent {
 
   get isSaveDisabled(): boolean {
     // null рассматриваем как "форма не валидна"
-    return (this.editForm()?.pristine ?? true) || (this.editForm()?.invalid ?? true);
+    return (this.form()?.pristine ?? true) || (this.form()?.invalid ?? true);
   }
 
   save() {
@@ -109,6 +121,6 @@ export class EditTodoFormComponent {
   }
 
   resetFormState () {
-    this.editForm()?.form.markAsPristine();
+    this.form()?.form.markAsPristine();
   }
 }

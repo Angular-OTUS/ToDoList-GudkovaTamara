@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { Router } from '@angular/router';
 import { ERoute } from '../../../../routing/types';
+import { BacklogStateService } from '../../services/basckog-state/backlog-state';
 
 @Component({
   selector: 'todo-list-item',
@@ -16,7 +17,6 @@ import { ERoute } from '../../../../routing/types';
     AppButton,
     MatCardModule,
     MatIconModule,
-    TooltipDirective,
   ],
   templateUrl: './todo-list-item.html',
   styleUrl: './todo-list-item.scss',
@@ -24,31 +24,40 @@ import { ERoute } from '../../../../routing/types';
 })
 export class ToDoListItemComponent {
 
-  private todosStateService = inject(TodosStateService);
+  private backlogStateService = inject(BacklogStateService);
   private todosDataService = inject(TodosDataService);
-  private toastService = inject(ToastService);
+
   private router = inject(Router);
 
   item: InputSignal<ToDoListItem> = input.required<ToDoListItem>();
   isSelected: InputSignal<boolean> = input<boolean>(false);
   deleted: OutputEmitterRef<ToDoListItem['id']> = output<ToDoListItem['id']>();
   Status = EStatus
+  ERoute = ERoute;
 
   readonly statusIconsMap = new Map([
     [EStatus.COMPLETED, '✔️'],
     [EStatus.IN_PROGRESS, '⏰'],
   ])
 
-  selectItem() {
-    this.router.navigate([ERoute.BACKLOG, this.item().id]);
+  selectItem(evt: Event) {
+    console.log('selectItem');
+    setTimeout(() => {
+      this.router.navigate([ERoute.BACKLOG, this.item().id]);
+    }, 0);
   }
 
-  handleDblClick() {
-    this.todosStateService.setEditingItem();
-    this.router.navigate([ERoute.BACKLOG, this.item().id]);
+  handleDblClick(evt: Event) {
+    console.log('handleDblClick');
+    this.backlogStateService.setEditingItem();
   }
 
-  deleteItem (id: number) {
+  deleteItem(id: number) {
     this.todosDataService.deleteTodo(id);
   }
+
+  ngOnChanges() {
+    console.log('🎯 ngOnChanges - component rerendering');
+  }
+
 }

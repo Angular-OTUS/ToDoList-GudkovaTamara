@@ -1,7 +1,6 @@
 
 
-<div class="container" [class.example-is-mobile]="isMobile()">
-  <mat-toolbar class="toolbar">
+  <!-- <mat-toolbar class="toolbar">
     <button matIconButton (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
     <h1 class="app-name">Board</h1>
   </mat-toolbar>
@@ -12,10 +11,8 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-      <!-- @for (content of fillerContent; track content) {
-      <p>{{content}}</p>
-      } -->
       <router-outlet />
     </mat-sidenav-content>
-  </mat-sidenav-container>
-</div>
+  </mat-sidenav-container> -->
+
+  <router-outlet />

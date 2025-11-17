@@ -1,26 +1,31 @@
 import { Routes } from '@angular/router';
 import { ERoute } from './types';
 import { BacklogPageComponent } from '../pages/backlog/backlog-page/backlog-page';
-import { ToDoListComponent } from '../features/backlog/containers/todo-list/todo-list';
+import { BacklogStateService } from '../features/backlog/services/basckog-state/backlog-state';
 
 export const routes: Routes = [
+
   {
     path: '',
-    redirectTo: 'tasks',
+    redirectTo: ERoute.BACKLOG,
     pathMatch: 'full',
   },
   {
     path: ERoute.BOARD,
-    component: ToDoListComponent,
+    loadComponent: () => import('../pages/board/board-page/board-page')
+      .then(m => m.BoardPageComponent),
   },
   {
     path: ERoute.BACKLOG,
-    component: BacklogPageComponent, // ToDoListComponent,
+    loadComponent: () => import('../pages/backlog/backlog-page/backlog-page')
+      .then(m => m.BacklogPageComponent),
   },
   {
     path: `${ERoute.BACKLOG}/:selectedItemId`,
-    component: BacklogPageComponent,
+    loadComponent: () => import('../pages/backlog/backlog-page/backlog-page')
+      .then(m => m.BacklogPageComponent),
   },
+
   {
     path: '**',
     redirectTo: 'tasks',

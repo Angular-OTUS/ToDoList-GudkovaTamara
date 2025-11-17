@@ -2,10 +2,14 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNavList } from '@angular/material/list';
+import { ERoute } from '../../routing/types';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav-menu',
   imports: [
+    RouterLink,
+
     MatNavList,
     MatIconModule,
     MatButtonModule,
@@ -15,5 +19,7 @@ import { MatNavList } from '@angular/material/list';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidenavMenuComponent {
+
+  Eroute = ERoute;
 
 }

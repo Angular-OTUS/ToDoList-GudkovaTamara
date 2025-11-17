@@ -15,6 +15,19 @@ html {
     typography: Roboto,
     density: -1,
   ));
+
+   user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  // Но разрешить выделение в полях ввода
+  input, textarea {
+    user-select: auto;
+    -webkit-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+  }
 }
 
 body {
@@ -50,3 +63,4 @@ mat-card-actions {
   padding: 0 !important;
   min-height: auto !important;
 }
+

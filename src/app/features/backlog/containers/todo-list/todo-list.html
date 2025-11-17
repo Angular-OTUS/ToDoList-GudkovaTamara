@@ -1,6 +1,9 @@
-<h1>ToDo List ({{ itemsCount() }})</h1>
-<app-new-todo-form />
+
+<!-- <app-new-todo-form /> -->
+
+
 <section>
+  <span>ToDo List ({{ itemsCount() }})</span>
   <mat-button-toggle-group
     class="status"
     [value]="filterValue()"
@@ -12,11 +15,11 @@
   </mat-button-toggle-group>
 
   <div class="columns-container">
-    <div class="column column-start">
+    <ul class="column column-start list">
       @if (isLoading()) {
       <app-spinner />
       } @else {
-      <ul class="list">
+
         @for (item of filteredTodos(); track item.id) {
         <li class="list__item">
           <todo-list-item
@@ -25,14 +28,8 @@
         />
         </li>
         }
-      </ul>
       }
-    </div>
-    <div class="column">
-      @if (selectedItemId()) {
-      <app-edit-todo-form [itemId]="selectedItemId()" />
-      }
-    </div>
+    </ul>
   </div>
 </section>
 
