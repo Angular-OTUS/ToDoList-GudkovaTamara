@@ -1,6 +1,6 @@
 @let editMode = isEditMode();
-
-@if (itemId()) {
+@let itemId = selectedItemId();
+@if (itemId) {
 <form
   #form="ngForm"
   (ngSubmit)="save()"
@@ -13,7 +13,7 @@
     <span>Статус задачи</span>
     <mat-checkbox
       name="status"
-      [disabled]="!isEditMode()"
+      [disabled]="!editMode"
       [(ngModel)]="dataToSave().status"
     />
   </div>
@@ -23,7 +23,7 @@
     <input
       matInput
       name="title"
-      [disabled]="!isEditMode()"
+      [disabled]="!editMode"
       [(ngModel)]="dataToSave().title"
     >
   </mat-form-field>
@@ -34,7 +34,7 @@
       name="description"
       #description="ngModel"
       [(ngModel)]="dataToSave().description"
-      [disabled]="!isEditMode()"
+      [disabled]="!editMode"
       required
       minlength="5"
     ></textarea>
@@ -47,7 +47,7 @@
       <mat-error>Поле должно содержать не менее 5 символов</mat-error>
     }
   }
-  @if (isEditMode() && form) {
+  @if (editMode && form) {
   <div class="edit-todo-form__actions">
     <app-button
       btn-title="Сохранить"

@@ -3,12 +3,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNavList } from '@angular/material/list';
 import { ERoute } from '../../routing/types';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav-menu',
   imports: [
     RouterLink,
+    RouterModule,
 
     MatNavList,
     MatIconModule,

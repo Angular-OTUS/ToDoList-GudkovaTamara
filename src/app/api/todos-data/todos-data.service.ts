@@ -1,12 +1,11 @@
 import { computed, DestroyRef, inject, Injectable, Injector, Signal, signal, WritableSignal } from '@angular/core';
-import { EStatus, ToDoListItem } from '../../../types/types';
+import { EStatus, ToDoListItem } from '../../features/types/types';
 import { TodosApiService } from '../todos-api/todos-api.service';
-import { catchError, map, of, tap } from 'rxjs';
-import { ToastService } from '../../../../core/services/toast/toast.service';
-import { LoggerService } from '../../../../core/services/logger/logger.service';
+import { catchError, EMPTY, map, of, tap } from 'rxjs';
+import { ToastService } from '../../core/services/toast/toast.service';
+import { LoggerService } from '../../core/services/logger/logger.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TodosStateService } from '../todos-state/todos-state-service';
-import { ActivatedRoute } from '@angular/router';
+import { TodosStateService } from '../../store/todos-state/todos-state-service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +17,6 @@ export class TodosDataService {
   loggerService = inject(LoggerService);
   stateService = inject(TodosStateService);
   private destroyRef = inject(DestroyRef);
-  private route = inject(ActivatedRoute);
 
   countTodos = computed(() => this.stateService.todos().length);
   isLoading: WritableSignal<boolean> = signal(false);
@@ -97,5 +95,29 @@ export class TodosDataService {
 
   getDefaultTitle(id: string): string {
     return `Task ${id}`;
+  }
+
+  updateTodoStatus(id: number, status: EStatus) {
+    const originalTodo = this.stateService.getTodoById(id);
+
+    if (!originalTodo) {
+      console.error(`Todo with id ${id} not found`);
+      return;
+    }
+
+    this.todosApiService.updateTodo({ id, status }).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap((updatedTodo) => {
+        this.toastService.showSuccess('Статус задачи успешно обновлен');
+        this.stateService.updateSingleTodo(id, updatedTodo);
+      }),
+      catchError(e => {
+        console.error(e.message, e.stack, e.status);
+        this.toastService.showError('Ошибка обновления статуса задачи');
+        // отправляем в стор, чтобы список тутудек реактивно обновился и тудушка вернулась в нужную колонку
+        this.stateService.updateSingleTodo(id, { status: originalTodo.status });
+        return EMPTY;
+      }),
+    ).subscribe();
   }
 }

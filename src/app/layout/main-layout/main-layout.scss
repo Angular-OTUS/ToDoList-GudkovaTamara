@@ -11,9 +11,11 @@ mat-sidenav-container {
 
 .toolbar {
   background: linear-gradient(179deg, #abd5bd 0%, #bbcfdd 100%);
+  justify-content: space-between;
 }
 
 .app-name {
   margin-left: 2rem;
+  margin-right: auto;
   font-size: 2rem;
 }

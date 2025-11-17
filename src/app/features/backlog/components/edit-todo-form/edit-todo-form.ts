@@ -2,12 +2,12 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, input, Si
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { MatInputModule } from '@angular/material/input';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
-import { TodosStateService } from '../../services/todos-state/todos-state-service';
+import { TodosStateService } from '../../../../store/todos-state/todos-state-service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { MatCardModule } from '@angular/material/card';
-import { TodosDataService } from '../../services/todos-data/todos-data.service';
+import { TodosDataService } from '../../../../api/todos-data/todos-data.service';
 import { BacklogStateService } from '../../services/basckog-state/backlog-state';
 import { ActivatedRoute } from '@angular/router';
 
@@ -41,15 +41,13 @@ export class EditTodoFormComponent {
   private todosStateService = inject(TodosStateService);
   private backlogStateService = inject(BacklogStateService);
 
-  itemId = this.backlogStateService.selectedItemId;
+  selectedItemId = input.required<number>();
   form = viewChild<NgForm>('form');
 
   isEditMode = this.backlogStateService.isEditMode;
   EStatus = EStatus;
 
   constructor() {
-    // this.backlogStateService.watchRouteParams(this.route);
-
     // Синхронизация при изменении selectedItem
     effect(() => {
       const selectedItem = this.item();
@@ -66,16 +64,12 @@ export class EditTodoFormComponent {
 
 
     effect(() => {
-    console.log('🕒 COMPONENT - isEditMode:', this.isEditMode(), 'at:', Date.now());
-  });
+      console.log('🕒 COMPONENT - isEditMode:', this.isEditMode(), 'at:', Date.now());
+    });
   }
 
   item: Signal<ToDoListItem | null> = computed(() => {
-    const itemId: number | null = this.itemId();
-    // if (!itemId) {
-    //   throw new Error('Selected item is null in EditTodoFormComponent - this should never happen');
-    // }
-
+    const itemId: number | null = this.selectedItemId();
     return this.todosStateService.todos().find((item) => item.id === itemId) ?? null;
   });
 
@@ -120,7 +114,7 @@ export class EditTodoFormComponent {
     this.resetFormState();
   }
 
-  resetFormState () {
+  resetFormState() {
     this.form()?.form.markAsPristine();
   }
 }

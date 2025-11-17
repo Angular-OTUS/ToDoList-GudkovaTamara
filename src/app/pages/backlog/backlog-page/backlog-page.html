@@ -1,13 +1,13 @@
- <!-- <mat-sidenav-container>
-    <mat-sidenav #sidenav mode="side" opened>
-      <app-todo-list />
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <button mat-icon-button class="toggle-button" (click)="sidenav.toggle()">
-        <mat-icon class="toggle-button__icon">{{ sidenav.opened ? 'chevron_left' : 'chevron_right' }}</mat-icon>
-      </button>
-      <app-edit-todo-form />
-    </mat-sidenav-content>
-  </mat-sidenav-container> -->
 
-<app-todo-list />
+@let id = selectedItemId();
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" opened>
+    <app-todo-list [selectedItemId]="+id" />
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <button mat-icon-button class="toggle-button" (click)="sidenav.toggle()">
+      <mat-icon class="toggle-button__icon">{{ sidenav.opened ? 'chevron_left' : 'chevron_right' }}</mat-icon>
+    </button>
+    <app-edit-todo-form [selectedItemId]="+id" />
+  </mat-sidenav-content>
+</mat-sidenav-container>

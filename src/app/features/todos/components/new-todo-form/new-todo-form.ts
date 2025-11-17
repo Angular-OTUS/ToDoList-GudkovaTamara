@@ -6,7 +6,7 @@ import { ToDoListItem } from '../../../types/types';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { TodosDataService } from '../../services/todos-data/todos-data.service';
+import { TodosDataService } from '../../../../api/todos-data/todos-data.service';
 
 @Component({
   selector: 'app-new-todo-form',

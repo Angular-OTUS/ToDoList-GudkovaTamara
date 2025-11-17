@@ -29,7 +29,6 @@ import { EditTodoFormComponent } from '../../../features/backlog/components/edit
 })
 export class BacklogPageComponent {
 
-
   selectedItemId = input.required<number, string>({
     transform: (value: string) => +value,
   });

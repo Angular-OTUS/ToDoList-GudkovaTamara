@@ -8,6 +8,7 @@ import { RouterOutlet } from '@angular/router';
 import {MediaMatcher} from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
 import { SidenavMenuComponent } from '../sidenav-menu/sidenav-menu';
+import { AddTodoBtnComponent } from '../../features/todos/components/add-todo-btn/add-todo-btn';
 
 @Component({
   selector: 'app-main-layout',
@@ -21,6 +22,7 @@ import { SidenavMenuComponent } from '../sidenav-menu/sidenav-menu';
     MatListModule,
 
     SidenavMenuComponent,
+    AddTodoBtnComponent,
   ],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',

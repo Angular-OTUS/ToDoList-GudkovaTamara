@@ -1,20 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, input, InputSignal, output, OutputEmitterRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, InputSignal } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { MatCardModule } from '@angular/material/card';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
-import { TodosStateService } from '../../services/todos-state/todos-state-service';
-import { ToastService } from '../../../../core/services/toast/toast.service';
-import { TodosDataService } from '../../services/todos-data/todos-data.service';
+import { TodosDataService } from '../../../../api/todos-data/todos-data.service';
 import { MatIconModule } from '@angular/material/icon';
 import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { Router } from '@angular/router';
 import { ERoute } from '../../../../routing/types';
-import { BacklogStateService } from '../../services/basckog-state/backlog-state';
+import { BacklogStateService } from '../../../backlog/services/basckog-state/backlog-state';
 
 @Component({
   selector: 'todo-list-item',
   imports: [
     AppButton,
+    TooltipDirective,
     MatCardModule,
     MatIconModule,
   ],
@@ -31,7 +30,6 @@ export class ToDoListItemComponent {
 
   item: InputSignal<ToDoListItem> = input.required<ToDoListItem>();
   isSelected: InputSignal<boolean> = input<boolean>(false);
-  deleted: OutputEmitterRef<ToDoListItem['id']> = output<ToDoListItem['id']>();
   Status = EStatus
   ERoute = ERoute;
 
@@ -41,14 +39,13 @@ export class ToDoListItemComponent {
   ])
 
   selectItem(evt: Event) {
-    console.log('selectItem');
+    this.backlogStateService.setEditingItem(false);
     setTimeout(() => {
       this.router.navigate([ERoute.BACKLOG, this.item().id]);
     }, 0);
   }
 
   handleDblClick(evt: Event) {
-    console.log('handleDblClick');
     this.backlogStateService.setEditingItem();
   }
 

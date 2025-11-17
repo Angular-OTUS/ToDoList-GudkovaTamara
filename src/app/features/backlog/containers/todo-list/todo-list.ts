@@ -1,22 +1,17 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, input, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { FormsModule } from '@angular/forms';
-import { ToDoListItemComponent } from '../../components/todo-list-item/todo-list-item';
+import { ToDoListItemComponent } from '../../../todos/components/todo-list-item/todo-list-item';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { EditTodoFormComponent } from '../../components/edit-todo-form/edit-todo-form';
-import { TodosStateService } from '../../services/todos-state/todos-state-service';
-import { NewTodoFormComponent } from '../../components/new-todo-form/new-todo-form';
+import { TodosStateService } from '../../../../store/todos-state/todos-state-service';
 import { SpinnerComponent } from '../../../../lib/ui/spinner/spinner';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
-import { TodosDataService } from '../../services/todos-data/todos-data.service';
-import { BacklogStateService } from '../../services/basckog-state/backlog-state';
-import { ActivatedRoute } from '@angular/router';
+import { TodosDataService } from '../../../../api/todos-data/todos-data.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 enum EStatusFilter {
   ALL = 'all',
@@ -38,12 +33,7 @@ enum EStatusFilter {
     MatButtonModule,
     MatListModule,
 
-    EditTodoFormComponent,
-    NewTodoFormComponent,
     SpinnerComponent,
-  ],
-  providers: [
-    BacklogStateService,
   ],
   templateUrl: './todo-list.html',
   styleUrl: './todo-list.scss',
@@ -51,18 +41,15 @@ enum EStatusFilter {
 })
 export class ToDoListComponent implements OnInit {
 
-  // private route = inject(ActivatedRoute); // Это правильный ActivatedRoute
-
   private todosDataService: TodosDataService = inject(TodosDataService);
   private todosStateService: TodosStateService = inject(TodosStateService);
-  private backlogStateService = inject(BacklogStateService);
 
   destroyRef = inject(DestroyRef);
 
   // Порядок generic параметров для input:
   // Первый параметр: Выходной тип
   // Второй параметр: Входной тип
-  selectedItemId = this.backlogStateService.selectedItemId;
+  selectedItemId = input.required<number>();
 
   todos: Signal<ToDoListItem[]> = this.todosStateService.todos;
   filterValue: WritableSignal<EStatusFilter> = signal(EStatusFilter.ALL);
@@ -88,7 +75,6 @@ export class ToDoListComponent implements OnInit {
     this.todosDataService.loadTodos();
   }
 
-  // Обработчик изменения фильтра
   onFilterChange(event: MatButtonToggleChange) {
     const newFilter = event.value;
     this.filterValue.set(newFilter);
