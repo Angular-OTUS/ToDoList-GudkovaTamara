@@ -49,7 +49,7 @@ export class ToDoListComponent implements OnInit {
   // Порядок generic параметров для input:
   // Первый параметр: Выходной тип
   // Второй параметр: Входной тип
-  selectedItemId = input.required<number>();
+  selectedItemId = input<number>();
 
   todos: Signal<ToDoListItem[]> = this.todosStateService.todos;
   filterValue: WritableSignal<EStatusFilter> = signal(EStatusFilter.ALL);
@@ -72,11 +72,14 @@ export class ToDoListComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.todosDataService.loadTodos();
+    if (this.todosStateService.todos().length === 0) {
+      this.todosDataService.loadTodos();
+    }
   }
 
   onFilterChange(event: MatButtonToggleChange) {
     const newFilter = event.value;
     this.filterValue.set(newFilter);
   }
+
 }

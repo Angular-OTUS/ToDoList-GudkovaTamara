@@ -73,7 +73,6 @@ export class EditTodoFormComponent {
     return this.todosStateService.todos().find((item) => item.id === itemId) ?? null;
   });
 
-
   // dataToSave - это данные для сохранения
   dataToSave: WritableSignal<DataToSave> = signal({
     title: '',

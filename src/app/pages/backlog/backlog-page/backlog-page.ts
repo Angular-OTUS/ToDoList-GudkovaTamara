@@ -29,7 +29,11 @@ import { EditTodoFormComponent } from '../../../features/backlog/components/edit
 })
 export class BacklogPageComponent {
 
-  selectedItemId = input.required<number, string>({
+  selectedItemId = input<number, string>(NaN,{
     transform: (value: string) => +value,
   });
+
+  ngOndestroy(): void {
+    console.log('ngOndestroy BacklogPageComponent')
+  }
 }

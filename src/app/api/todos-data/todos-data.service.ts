@@ -120,4 +120,8 @@ export class TodosDataService {
       }),
     ).subscribe();
   }
+
+  clearTodosState () {
+    this.stateService.setTodosList([]);
+  }
 }
