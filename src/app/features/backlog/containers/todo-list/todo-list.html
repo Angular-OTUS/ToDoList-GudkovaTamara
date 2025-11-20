@@ -1,0 +1,31 @@
+<section>
+  <span>ToDo List ({{ itemsCount() }})</span>
+  <mat-button-toggle-group
+    class="status"
+    [value]="filterValue()"
+    (change)="onFilterChange($event)"
+  >
+    <mat-button-toggle [value]="EStatusFilter.ALL">Все</mat-button-toggle>
+    <mat-button-toggle [value]="EStatusFilter.IN_PROGRESS">🔄 В прогрессе</mat-button-toggle>
+    <mat-button-toggle [value]="EStatusFilter.COMPLETED">✅ Завершено</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <div class="columns-container">
+    <ul class="column column-start list">
+      @if (isLoading()) {
+      <app-spinner />
+      } @else {
+
+        @for (item of filteredTodos(); track item.id) {
+        <li class="list__item">
+          <todo-list-item
+          [item]="item"
+          [isSelected]="item.id === selectedItemId()"
+        />
+        </li>
+        }
+      }
+    </ul>
+  </div>
+</section>
+

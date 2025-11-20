@@ -5,7 +5,7 @@
       "title": "Task 1",
       "description": "Description 1 ggпиg",
       "completed": false,
-      "status": "completed"
+      "status": "InProgress"
     },
     {
       "id": 2,
@@ -26,20 +26,26 @@
       "title": "Task 4",
       "description": "Description 4",
       "completed": false,
-      "status": "completed"
+      "status": "InProgress"
     },
     {
       "id": 5,
       "title": "Task 5",
       "description": "Description 5",
-      "status": "InProgress"
+      "status": "completed"
     },
     {
       "id": 6,
       "title": "Task 6",
       "description": "Description 6",
       "completed": false,
-      "status": "InProgress"
+      "status": "completed"
+    },
+    {
+      "title": "новая задача",
+      "description": "ываываыаываыва",
+      "status": "InProgress",
+      "id": 7
     }
   ]
 }

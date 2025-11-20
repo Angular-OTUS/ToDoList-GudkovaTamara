@@ -1,0 +1,50 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.columns-container {
+  display: flex;
+  gap: 2rem;
+
+  & .column-start {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+  }
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.status {
+  align-self: flex-start;
+}
+
+.toggle-button {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__icon {
+    font-size: 30px;
+    font-size: xx-large;
+    width: auto;
+    height: auto;
+  }
+}
+
+

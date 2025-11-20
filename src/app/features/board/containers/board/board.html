@@ -1,0 +1,27 @@
+<div cdkDropListGroup class="grid-container">
+  <h2 class="page-title">Board page</h2>
+  <div
+    cdkDropList
+    [cdkDropListData]="newTodos()"
+    (cdkDropListDropped)="drop($event)"
+    class="start-column"
+    id="new-container"
+  >
+    <h4>Новые</h4>
+    @for(item of newTodos(); track item.id) {
+      <todo-list-item [item]="item" cdkDrag />
+    }
+  </div>
+  <div
+    cdkDropList
+    [cdkDropListData]="completedTodos()"
+    (cdkDropListDropped)="drop($event)"
+    class="end-column"
+    id="completed-container"
+  >
+    <h4>Завершенные</h4>
+    @for(item of completedTodos(); track item.id) {
+      <todo-list-item [item]="item" cdkDrag />
+    }
+  </div>
+</div>

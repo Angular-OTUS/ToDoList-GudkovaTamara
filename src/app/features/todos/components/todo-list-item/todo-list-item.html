@@ -1,9 +1,8 @@
 @let itemData = item();
-
 <mat-card
   class="item"
-  (click)="selectItem()"
-  (dblclick)="handleDblClick()"
+  (click)="selectItem($event)"
+  (dblclick)="handleDblClick($event)"
   [class.selected]="isSelected()"
 >
   <mat-card-header class="item__title">

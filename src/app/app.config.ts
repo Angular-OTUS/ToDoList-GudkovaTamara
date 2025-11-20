@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
 
-import { routes } from './app.routes';
+import { routes } from './routing/app.routes';
 
 import { materialConfigProviders } from './material/material.config';
 import { GlobalErrorHandler } from './core/services/global-error-handler/global-error-handler';

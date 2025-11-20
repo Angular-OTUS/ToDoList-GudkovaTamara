@@ -1,0 +1,16 @@
+<mat-toolbar class="toolbar">
+  <button matIconButton (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+  <h1 class="app-name">Board</h1>
+  <app-add-todo-btn />
+</mat-toolbar>
+
+<mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="isMobile() ? 56 : 0">
+  <mat-sidenav #snav [mode]="isMobile() ? 'over' : 'side'" [fixedInViewport]="isMobile()" fixedTopGap="56"
+    [style.width.px]="280">
+    <app-sidenav-menu />
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>
