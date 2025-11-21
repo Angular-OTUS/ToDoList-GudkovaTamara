@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TodosDataService } from '../../../../api/todos-data/todos-data.service';
 import { TodosStateService } from '../../../../store/todos-state/todos-state-service';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { ToDoListItemComponent } from '../../../todos/components/todo-list-item/todo-list-item';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { map, Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 enum EColumnsId {
   NEW = 'new-container',
@@ -14,6 +16,7 @@ enum EColumnsId {
   selector: 'app-board',
   imports: [
     ToDoListItemComponent,
+    AsyncPipe,
 
     CdkDrag,
     CdkDropList,
@@ -28,11 +31,19 @@ export class BoardComponent {
   todosDataService: TodosDataService = inject(TodosDataService);
   private todosStateService: TodosStateService = inject(TodosStateService);
 
-  todos: Signal<ToDoListItem[]> = this.todosStateService.todos;
+  todos$: Observable<ToDoListItem[]> = this.todosStateService.todos$;
 
-  newTodos = computed(() => this.todos().filter((todo) => todo.status === EStatus.IN_PROGRESS));
+  newTodos$: Observable<ToDoListItem[]> = this.todos$.pipe(
+    map((todos) => todos.filter(
+      (todo) => todo?.status === EStatus.IN_PROGRESS),
+    ),
+  );
 
-  completedTodos = computed(() => this.todos().filter((todo) => todo.status === EStatus.COMPLETED));
+  completedTodos$ = this.todos$.pipe(
+    map((todos) => todos.filter(
+      (todo) => todo?.status === EStatus.COMPLETED),
+    ),
+  )
 
   drop(event: CdkDragDrop<ToDoListItem[]>) {
     if (event.previousContainer === event.container) {

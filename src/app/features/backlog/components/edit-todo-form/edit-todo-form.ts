@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input, Signal, signal, viewChild, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, input, OnInit, viewChild } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { MatInputModule } from '@angular/material/input';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
@@ -10,6 +10,9 @@ import { MatCardModule } from '@angular/material/card';
 import { TodosDataService } from '../../../../api/todos-data/todos-data.service';
 import { BacklogStateService } from '../../services/basckog-state/backlog-state';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { AsyncPipe } from '@angular/common';
 
 interface DataToSave {
   title: string;
@@ -21,6 +24,7 @@ interface DataToSave {
   selector: 'app-edit-todo-form',
   imports: [
     FormsModule,
+    AsyncPipe,
 
     MatInputModule,
     MatCheckboxModule,
@@ -33,13 +37,14 @@ interface DataToSave {
   styleUrl: './edit-todo-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditTodoFormComponent {
+export class EditTodoFormComponent implements OnInit {
 
   private route = inject(ActivatedRoute);
 
   private todosDataService = inject(TodosDataService);
   private todosStateService = inject(TodosStateService);
   private backlogStateService = inject(BacklogStateService);
+  private destroyRef = inject(DestroyRef);
 
   selectedItemId = input.required<number>();
   form = viewChild<NgForm>('form');
@@ -47,38 +52,23 @@ export class EditTodoFormComponent {
   isEditMode = this.backlogStateService.isEditMode;
   EStatus = EStatus;
 
-  constructor() {
-    // Синхронизация при изменении selectedItem
-    effect(() => {
-      const selectedItem = this.item();
-
-      if (!selectedItem) {
-        return;
-      }
-      this.dataToSave.set({
-        title: selectedItem.title,
-        description: selectedItem.description,
-        status: selectedItem.status === EStatus.COMPLETED,
-      });
-    });
-
-
-    effect(() => {
-      console.log('🕒 COMPONENT - isEditMode:', this.isEditMode(), 'at:', Date.now());
-    });
-  }
-
-  item: Signal<ToDoListItem | null> = computed(() => {
-    const itemId: number | null = this.selectedItemId();
-    return this.todosStateService.todos().find((item) => item.id === itemId) ?? null;
-  });
-
-  // dataToSave - это данные для сохранения
-  dataToSave: WritableSignal<DataToSave> = signal({
+    // dataToSave - это данные для сохранения
+  dataToSaveSubj: BehaviorSubject<DataToSave> = new BehaviorSubject<DataToSave>({
     title: '',
     description: '',
     status: false,
   });
+
+  dataToSave$ = this.dataToSaveSubj.asObservable();
+
+  item$: Observable<ToDoListItem | null> = combineLatest([
+    this.todosStateService.todos$,
+    toObservable(this.selectedItemId),
+  ]).pipe(
+    map(([todos, id]: [ToDoListItem[], number]) => {
+      return todos.find((item) => item.id === id) ?? null;
+    })
+  )
 
   title = computed(() => {
     return this.isEditMode()
@@ -86,25 +76,37 @@ export class EditTodoFormComponent {
       : 'Просмотр задачи';
   })
 
-  isFormDirty = computed(() => {
-    const dataToSave = this.dataToSave();
-    const selectedItem = this.item();
-    return dataToSave?.title !== selectedItem?.title
-      || dataToSave?.description !== selectedItem?.description;
-  })
+  isFormDirty: Observable<boolean> = combineLatest([
+    this.dataToSave$,
+    this.item$,
+  ]).pipe(
+    map(([dataToSave, selectedItem]) => {
+      return dataToSave?.title !== selectedItem?.title
+        || dataToSave?.description !== selectedItem?.description;
+    })
+  )
 
-  get isSaveDisabled(): boolean {
-    // null рассматриваем как "форма не валидна"
-    return (this.form()?.pristine ?? true) || (this.form()?.invalid ?? true);
+    get isSaveDisabled(): boolean {
+      // null рассматриваем как "форма не валидна"
+      return (this.form()?.pristine ?? true) || (this.form()?.invalid ?? true);
+    }
+
+    updateDataToSave(evt: Partial<DataToSave>) {
+      const prevDataToSave = this.dataToSaveSubj.getValue();
+      console.log('updateDataToSave', evt);
+      this.dataToSaveSubj.next({
+        ...prevDataToSave,
+        ...evt,
+      });
   }
 
   save() {
-    const itemId = this.item()?.id;
+    const itemId = this.selectedItemId();
 
     if (!itemId) {
       return;
     }
-    const data = this.dataToSave();
+    const data = this.dataToSaveSubj.getValue();
     this.todosDataService.editTodo({
       ...data,
       id: itemId,
@@ -115,5 +117,17 @@ export class EditTodoFormComponent {
 
   resetFormState() {
     this.form()?.form.markAsPristine();
+  }
+
+  ngOnInit(): void {
+    this.item$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe((item) => {
+      this.dataToSaveSubj.next({
+        title: item?.title ?? '',
+        description: item?.description ?? '',
+        status: item?.status === EStatus.COMPLETED,
+      })
+    })
   }
 }

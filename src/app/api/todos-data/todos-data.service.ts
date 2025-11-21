@@ -1,7 +1,7 @@
-import { computed, DestroyRef, inject, Injectable, Injector, Signal, signal, WritableSignal } from '@angular/core';
+import { DestroyRef, inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../features/types/types';
 import { TodosApiService } from '../todos-api/todos-api.service';
-import { catchError, EMPTY, map, of, tap } from 'rxjs';
+import { catchError, EMPTY, map, Observable, of, tap } from 'rxjs';
 import { ToastService } from '../../core/services/toast/toast.service';
 import { LoggerService } from '../../core/services/logger/logger.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -18,12 +18,17 @@ export class TodosDataService {
   stateService = inject(TodosStateService);
   private destroyRef = inject(DestroyRef);
 
-  countTodos = computed(() => this.stateService.todos().length);
+  todos$ = this.stateService.todos$;
+
+
+
+  readonly todosCount$: Observable<number> = this.todos$.pipe(
+    map(todos => todos.length)
+  );
   isLoading: WritableSignal<boolean> = signal(false);
-  selectedItemId: WritableSignal<number | null> = signal(null);
 
   addTodo(todo: ToDoListItem) {
-    const newTodoId = this.countTodos() + 1;
+    const newTodoId = this.stateService.countTodos + 1;
     this.todosApiService.createTodo({
       ...todo,
       title: todo.title ?? this.getDefaultTitle(newTodoId.toString()),
@@ -121,7 +126,7 @@ export class TodosDataService {
     ).subscribe();
   }
 
-  clearTodosState () {
+  clearTodosState() {
     this.stateService.setTodosList([]);
   }
 }

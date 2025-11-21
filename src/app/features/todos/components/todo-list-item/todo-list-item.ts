@@ -53,8 +53,4 @@ export class ToDoListItemComponent {
     this.todosDataService.deleteTodo(id);
   }
 
-  ngOnChanges() {
-    console.log('🎯 ngOnChanges - component rerendering');
-  }
-
 }

@@ -32,7 +32,6 @@ export class BacklogStateService {
 
   setEditingItem(flag: boolean = true) {
     this._isEditMode.set(flag);
-    console.log('isEditMode:', this._isEditMode());
   }
 
 }
