@@ -1,8 +1,8 @@
 <section>
-  <span>ToDo List ({{ itemsCount() }})</span>
+  <span>ToDo List ({{ (todos$ | async)?.length }})</span>
   <mat-button-toggle-group
     class="status"
-    [value]="filterValue()"
+    [value]="filterValueSubj.value"
     (change)="onFilterChange($event)"
   >
     <mat-button-toggle [value]="EStatusFilter.ALL">Все</mat-button-toggle>
@@ -16,7 +16,7 @@
       <app-spinner />
       } @else {
 
-        @for (item of filteredTodos(); track item.id) {
+        @for (item of (filteredTodos$ | async); track item.id) {
         <li class="list__item">
           <todo-list-item
           [item]="item"

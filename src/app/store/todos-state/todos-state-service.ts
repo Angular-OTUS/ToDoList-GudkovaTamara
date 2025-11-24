@@ -1,29 +1,34 @@
-import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ToDoListItem } from '../../features/types/types';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodosStateService {
 
-  private readonly _todos: WritableSignal<ToDoListItem[]> = signal([]);
+  private readonly _todosSubject = new BehaviorSubject<ToDoListItem[]>([]);
 
-  // Public signals
-  readonly todos: Signal<ToDoListItem[]> = this._todos.asReadonly();
+  readonly todos$: Observable<ToDoListItem[]> = this._todosSubject.asObservable();
+
+  get countTodos (): number {
+    return this._todosSubject.getValue().length;
+  }
 
   setTodosList(todos: ToDoListItem[]) {
-    this._todos.set(todos);
+    this._todosSubject.next(todos);
   }
 
   getTodoById(id: number): ToDoListItem | undefined {
-    return this.todos().find(t => t.id === id);
+    return this._todosSubject.getValue().find(t => t.id === id);
   }
 
   updateSingleTodo(id: number, todo: Partial<ToDoListItem>) {
-  this._todos.update(todos =>
-    todos.map(t =>
-      t.id === id ? { ...t, ...todo } : t
-    )
-  );
-}
+    const newTodos =
+      this._todosSubject.getValue().map(t =>
+        t.id === id ? { ...t, ...todo } : t
+      );
+
+    this._todosSubject.next(newTodos);
+  }
 }

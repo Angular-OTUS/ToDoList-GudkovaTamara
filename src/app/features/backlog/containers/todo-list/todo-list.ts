@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, input, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, WritableSignal } from '@angular/core';
 import { EStatus, ToDoListItem } from '../../../types/types';
 import { FormsModule } from '@angular/forms';
 import { ToDoListItemComponent } from '../../../todos/components/todo-list-item/todo-list-item';
@@ -12,6 +12,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 enum EStatusFilter {
   ALL = 'all',
@@ -23,6 +25,7 @@ enum EStatusFilter {
   selector: 'app-todo-list',
   imports: [
     FormsModule,
+    AsyncPipe,
 
     ToDoListItemComponent,
     MatInputModule,
@@ -51,35 +54,37 @@ export class ToDoListComponent implements OnInit {
   // Второй параметр: Входной тип
   selectedItemId = input<number>();
 
-  todos: Signal<ToDoListItem[]> = this.todosStateService.todos;
-  filterValue: WritableSignal<EStatusFilter> = signal(EStatusFilter.ALL);
+  todos$: Observable<ToDoListItem[]> = this.todosStateService.todos$;
+  filterValueSubj = new BehaviorSubject(EStatusFilter.ALL);
 
-  itemsCount: Signal<number> = this.todosDataService.countTodos;
   isLoading: WritableSignal<boolean> = this.todosDataService.isLoading;
   EStatusFilter = EStatusFilter;
 
-  filteredTodos = computed(() => {
-    const filter = this.filterValue();
-
-    switch (filter) {
-      case EStatusFilter.IN_PROGRESS:
-        return this.todos().filter((todo) => todo.status === EStatus.IN_PROGRESS);
-      case EStatusFilter.COMPLETED:
-        return this.todos().filter((todo) => todo.status === EStatus.COMPLETED);
-      default:
-        return this.todos();
-    }
-  });
+  filteredTodos$ = combineLatest([
+    this.filterValueSubj,
+    this.todosStateService.todos$,
+  ]).pipe(
+    map(([filter, todos]: [EStatusFilter, ToDoListItem[]]) => {
+      switch (filter) {
+        case EStatusFilter.IN_PROGRESS:
+          return todos.filter((todo) => todo.status === EStatus.IN_PROGRESS);
+        case EStatusFilter.COMPLETED:
+          return todos.filter((todo) => todo.status === EStatus.COMPLETED);
+        default:
+          return todos;
+      }
+    })
+  )
 
   ngOnInit() {
-    if (this.todosStateService.todos().length === 0) {
+    if (this.todosStateService.countTodos === 0) {
       this.todosDataService.loadTodos();
     }
   }
 
   onFilterChange(event: MatButtonToggleChange) {
     const newFilter = event.value;
-    this.filterValue.set(newFilter);
+    this.filterValueSubj.next(newFilter);
   }
 
 }
