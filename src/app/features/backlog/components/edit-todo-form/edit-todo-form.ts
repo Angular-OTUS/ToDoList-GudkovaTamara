@@ -13,6 +13,8 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { AsyncPipe } from '@angular/common';
+import { TranslocoPipe, TranslocoService } from '@ngneat/transloco';
+import { useDynamicTranslation } from '../../../../utils/transloco.utils';
 
 interface DataToSave {
   title: string;
@@ -25,6 +27,7 @@ interface DataToSave {
   imports: [
     FormsModule,
     AsyncPipe,
+    TranslocoPipe,
 
     MatInputModule,
     MatCheckboxModule,
@@ -45,6 +48,7 @@ export class EditTodoFormComponent implements OnInit {
   private todosStateService = inject(TodosStateService);
   private backlogStateService = inject(BacklogStateService);
   private destroyRef = inject(DestroyRef);
+  private transloco = inject(TranslocoService);
 
   selectedItemId = input.required<number>();
   form = viewChild<NgForm>('form');
@@ -70,11 +74,9 @@ export class EditTodoFormComponent implements OnInit {
     })
   )
 
-  title = computed(() => {
-    return this.isEditMode()
-      ? 'Редактировать задачу'
-      : 'Просмотр задачи';
-  })
+  title = useDynamicTranslation(() =>
+    this.isEditMode() ? 'taskForm.editTask' : 'taskForm.viewTask'
+  );
 
   isFormDirty: Observable<boolean> = combineLatest([
     this.dataToSave$,

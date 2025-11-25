@@ -5,11 +5,11 @@
 >
 <mat-card class="new-todo-form">
   <mat-card-header>
-    <mat-card-title>Новая задача</mat-card-title>
+    <mat-card-title>{{ 'taskForm.newTaskTitle' | transloco }}</mat-card-title>
   </mat-card-header>
 
   <div>
-    <span>Задача выполнена</span>
+    <span>{{ 'taskForm.statusLabel' | transloco }}</span>
     <mat-checkbox
       name="title"
       [(ngModel)]="newTodoData.status"
@@ -17,16 +17,16 @@
   </div>
 
   <mat-form-field>
-    <mat-label>Название</mat-label>
+    <mat-label>{{ 'taskForm.title' | transloco }}</mat-label>
     <input
       matInput
       name="title"
       [(ngModel)]="newTodoData.title"
-      placeholder="Введите название задачи"
+      [placeholder]="'taskForm.textInputPlaceholder' | transloco"
     >
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Описание</mat-label>
+    <mat-label>{{ 'taskForm.description' | transloco }}</mat-label>
     <textarea
       matInput
       name="description"
@@ -45,9 +45,9 @@
   </mat-form-field>
   <mat-card-actions class="new-todo-form__actions">
     <app-button
-      btn-title="Добавить задачу"
+      [btn-title]="'taskForm.addTaskBtnTitle' | transloco"
       [isDisabled]="!!form.invalid || !!form.pristine"
-      [appTooltip]="'Добавьте задачу'"
+      [appTooltip]="'taskForm.addTaskBtnTitle' | transloco"
       type="submit"
     />
   </mat-card-actions>

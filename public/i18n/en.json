@@ -1,0 +1,34 @@
+{
+  "board": {
+    "title": "Task Board",
+    "tasks": "Tasks"
+  },
+  "backlog": {
+    "title": "Backlog",
+    "todoList": "Tasks List",
+    "selectTask": "Select a Task",
+    "filters": {
+      "all": "All",
+      "completed": "Completed",
+      "inProgress": "In Progress"
+    }
+  },
+  "taskForm": {
+    "title": "Name",
+    "description": "Description",
+    "status": "Status",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saveTooltip": "Save Task",
+    "editTask": "Edit Task",
+    "viewTask": "View Task",
+    "addTaskBtnTitle": "Add Task",
+    "textInputPlaceholder": "Enter Task Name",
+    "statusLabel": "Task Completed",
+    "newTaskTitle": "New Task"
+  },
+  "menu": {
+    "backlog": "Backlog",
+    "board": "Tasks Board"
+  }
+}

@@ -1,0 +1,39 @@
+@let currentLanguage = currentLang();
+
+<div class="header__lang-container languages">
+  <ul class="languages__list">
+    @for (item of completeLanguageList; track $index) {
+    <li class="languages__item">
+      <ng-container *ngTemplateOutlet="languageTemplate; context: { lang: item }"></ng-container>
+    </li>
+    }
+
+  </ul>
+  <!-- <button class="languages__menu-btn" mat-button [matMenuTriggerFor]="langMenu">
+    <img [src]="'images/flags/' + currentLanguage + '.png'" [alt]="currentLanguage" class="languages__icon" />
+    <span class="languages__key">{{ currentLanguage | titlecase }}</span>
+  </button>
+  <mat-menu #langMenu="matMenu" class="languages__menu">
+    @for (item of completeLanguageList; track $index) {
+    <div mat-menu-item>
+      <ng-container *ngTemplateOutlet="languageTemplate; context: { lang: item }"></ng-container>
+    </div>
+    }
+  </mat-menu> -->
+</div>
+
+<ng-template #languageTemplate let-lang="lang">
+    <button
+        matButton
+        class="languages__btn"
+        [class]="{active: currentLanguage === lang}"
+        (click)="switchLanguage(lang)"
+    >
+        <img
+            [src]="'images/flags/' + lang + '.png'"
+            [alt]="lang"
+            class="languages__icon"
+        />
+        {{ lang.trim() | titlecase }}
+    </button>
+</ng-template>

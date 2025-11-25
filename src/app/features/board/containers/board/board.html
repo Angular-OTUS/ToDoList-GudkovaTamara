@@ -2,7 +2,7 @@
   @let completedTodos = completedTodos$ | async;
 
 <div cdkDropListGroup class="grid-container">
-  <h2 class="page-title">Board page</h2>
+  <h2 class="page-title">{{ 'board.tasks' | transloco }}</h2>
   <div
     cdkDropList
     [cdkDropListData]="newTodos || []"

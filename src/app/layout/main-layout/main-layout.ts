@@ -9,11 +9,14 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
 import { SidenavMenuComponent } from '../sidenav-menu/sidenav-menu';
 import { AddTodoBtnComponent } from '../../features/todos/components/add-todo-btn/add-todo-btn';
+import { LangControlComponent } from '../lang-control/lang-control';
+import { TranslocoModule, TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-main-layout',
   imports: [
     RouterOutlet,
+    TranslocoPipe,
 
     MatToolbarModule,
     MatSidenavModule,
@@ -23,6 +26,7 @@ import { AddTodoBtnComponent } from '../../features/todos/components/add-todo-bt
 
     SidenavMenuComponent,
     AddTodoBtnComponent,
+    LangControlComponent,
   ],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',

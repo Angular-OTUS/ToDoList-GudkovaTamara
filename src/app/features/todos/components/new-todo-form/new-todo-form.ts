@@ -7,11 +7,13 @@ import { AppButton } from '../../../../lib/ui/app-button/app-button';
 import { TooltipDirective } from '../../../../lib/directives/tooltip/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TodosDataService } from '../../../../api/todos-data/todos-data.service';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-new-todo-form',
   imports: [
     FormsModule,
+    TranslocoPipe,
 
     MatCardModule,
     MatInputModule,

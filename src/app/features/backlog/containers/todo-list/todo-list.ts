@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 enum EStatusFilter {
   ALL = 'all',
@@ -26,6 +27,7 @@ enum EStatusFilter {
   imports: [
     FormsModule,
     AsyncPipe,
+    TranslocoPipe,
 
     ToDoListItemComponent,
     MatInputModule,

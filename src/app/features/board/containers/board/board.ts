@@ -6,6 +6,7 @@ import { ToDoListItemComponent } from '../../../todos/components/todo-list-item/
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 enum EColumnsId {
   NEW = 'new-container',
@@ -17,6 +18,7 @@ enum EColumnsId {
   imports: [
     ToDoListItemComponent,
     AsyncPipe,
+    TranslocoPipe,
 
     CdkDrag,
     CdkDropList,

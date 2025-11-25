@@ -1,0 +1,34 @@
+{
+  "board": {
+    "title": "Доска задач",
+    "tasks": "Задачи"
+  },
+  "backlog": {
+    "title": "Бэклог",
+    "todoList": "Список задач",
+    "selectTask": "Выберите задачу",
+    "filters": {
+      "all": "Все",
+      "completed": "Завершенные",
+      "inProgress": "В процессе"
+    }
+  },
+  "taskForm": {
+    "title": "Название",
+    "description": "Описание",
+    "status": "Статус",
+    "save": "Сохранить",
+    "cancel": "Отменить",
+    "saveTooltip": "Сохранить задачу",
+    "editTask": "Редактировать задачу",
+    "viewTask": "Просмотр задачи",
+    "addTaskBtnTitle": "Добавить задачу",
+    "textInputPlaceholder": "Введите название задачи",
+    "statusLabel": "Задача выполнена",
+    "newTaskTitle": "Новая задача"
+  },
+  "menu": {
+    "backlog": "Бэклог",
+    "board": "Доска задач"
+  }
+}
