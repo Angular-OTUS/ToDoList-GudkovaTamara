@@ -3,13 +3,15 @@ import { TranslocoService } from '@ngneat/transloco';
 import { TRANSLOCO_CONF } from '../../transloco/transloco-conf';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { CommonModule, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-lang-control',
   imports: [
     MatMenuModule,
     MatIconModule,
+    MatButtonModule,
 
     TitleCasePipe,
     NgTemplateOutlet,

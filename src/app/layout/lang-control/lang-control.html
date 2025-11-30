@@ -9,24 +9,13 @@
     }
 
   </ul>
-  <!-- <button class="languages__menu-btn" mat-button [matMenuTriggerFor]="langMenu">
-    <img [src]="'images/flags/' + currentLanguage + '.png'" [alt]="currentLanguage" class="languages__icon" />
-    <span class="languages__key">{{ currentLanguage | titlecase }}</span>
-  </button>
-  <mat-menu #langMenu="matMenu" class="languages__menu">
-    @for (item of completeLanguageList; track $index) {
-    <div mat-menu-item>
-      <ng-container *ngTemplateOutlet="languageTemplate; context: { lang: item }"></ng-container>
-    </div>
-    }
-  </mat-menu> -->
 </div>
 
 <ng-template #languageTemplate let-lang="lang">
     <button
         matButton
         class="languages__btn"
-        [class]="{active: currentLanguage === lang}"
+        [class.active]="currentLanguage === lang"
         (click)="switchLanguage(lang)"
     >
         <img

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LangControl } from './lang-control';
+import { LangControlComponent } from './lang-control';
 
 describe('LangControl', () => {
-  let component: LangControl;
-  let fixture: ComponentFixture<LangControl>;
+  let component: LangControlComponent;
+  let fixture: ComponentFixture<LangControlComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LangControl]
+      imports: [LangControlComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LangControl);
+    fixture = TestBed.createComponent(LangControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

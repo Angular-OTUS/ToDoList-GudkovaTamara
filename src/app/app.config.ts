@@ -12,7 +12,7 @@ import { materialConfigProviders } from './material/material.config';
 import { GlobalErrorHandler } from './core/services/global-error-handler/global-error-handler';
 import { provideHttpClient } from '@angular/common/http';
 import { TranslocoHttpLoader } from './transloco/transloco-loader';
-import { provideTransloco, translocoConfig } from '@ngneat/transloco';
+import { provideTransloco } from '@ngneat/transloco';
 import { TRANSLOCO_CONF } from './transloco/transloco-conf';
 
 export const appConfig: ApplicationConfig = {
@@ -32,9 +32,10 @@ export const appConfig: ApplicationConfig = {
       routes,
       withViewTransitions(),
       withComponentInputBinding(),
-    ), provideHttpClient(), provideTransloco({
-        config: TRANSLOCO_CONF,
-        loader: TranslocoHttpLoader
-      }),
+    ), provideHttpClient(),
+    provideTransloco({
+      config: TRANSLOCO_CONF,
+      loader: TranslocoHttpLoader
+    }),
   ],
 };
