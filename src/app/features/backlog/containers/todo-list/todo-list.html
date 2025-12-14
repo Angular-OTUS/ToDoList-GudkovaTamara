@@ -1,13 +1,16 @@
 <section>
-  <span>ToDo List ({{ (todos$ | async)?.length }})</span>
+  <span>
+    {{ 'backlog.todoList' | transloco }}
+    {{ (todos$ | async)?.length ? ' (' + (todos$ | async)?.length + ')' : ''  }}
+  </span>
   <mat-button-toggle-group
     class="status"
     [value]="filterValueSubj.value"
     (change)="onFilterChange($event)"
   >
-    <mat-button-toggle [value]="EStatusFilter.ALL">Все</mat-button-toggle>
-    <mat-button-toggle [value]="EStatusFilter.IN_PROGRESS">🔄 В прогрессе</mat-button-toggle>
-    <mat-button-toggle [value]="EStatusFilter.COMPLETED">✅ Завершено</mat-button-toggle>
+    <mat-button-toggle [value]="EStatusFilter.ALL">{{ 'backlog.filters.all' | transloco }}</mat-button-toggle>
+    <mat-button-toggle [value]="EStatusFilter.IN_PROGRESS">🔄 {{ 'backlog.filters.inProgress' | transloco }}</mat-button-toggle>
+    <mat-button-toggle [value]="EStatusFilter.COMPLETED">✅ {{ 'backlog.filters.completed' | transloco }}</mat-button-toggle>
   </mat-button-toggle-group>
 
   <div class="columns-container">

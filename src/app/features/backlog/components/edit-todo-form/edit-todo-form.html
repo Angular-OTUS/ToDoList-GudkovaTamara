@@ -11,7 +11,7 @@
       <mat-card-title>{{ title() }}</mat-card-title>
     </mat-card-header>
   <div>
-    <span>Статус задачи</span>
+    <span>{{ 'taskForm.status' | transloco }}</span>
     <mat-checkbox
       name="status"
       [disabled]="!editMode"
@@ -21,7 +21,7 @@
   </div>
 
   <mat-form-field>
-    <mat-label>Название</mat-label>
+    <mat-label>{{ 'taskForm.title' | transloco }}</mat-label>
     <input
       matInput
       name="title"
@@ -31,7 +31,7 @@
     >
   </mat-form-field>
   <mat-form-field>
-    <mat-label>Описание</mat-label>
+    <mat-label>{{ 'taskForm.description' | transloco }}</mat-label>
     <textarea
       matInput
       name="description"
@@ -57,13 +57,13 @@
       btn-title="Сохранить"
       type="submit"
       [isDisabled]="isSaveDisabled"
-      [appTooltip]="'Сохранить задачу'"
+      [appTooltip]="'taskForm.saveTooltip' | transloco"
     />
   </div>
   }
   </mat-card>
 </form>
 } @else {
-  <h3 class="select-task-warn">Выберите задачу</h3>
+  <h3 class="select-task-warn">{{ 'backlog.selectTask' | transloco }}</h3>
 }
 
